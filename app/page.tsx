@@ -59,7 +59,7 @@ export default function LandingPage() {
     {/* CTA Button */}
     <div className="hidden md:flex items-center">
       <Button className="bg-black hover:bg-gray-900 text-white" asChild>
-        <Link href="/dashboard">Get Started</Link>
+        <Link href="/auth/signin">Get Started</Link>
       </Button>
     </div>
 

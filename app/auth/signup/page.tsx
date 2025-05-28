@@ -5,27 +5,52 @@ import type React from "react"
 import { useState } from "react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
-import { Eye, EyeOff, Share2, Mail, Lock, Github } from "lucide-react"
+import { Eye, EyeOff, Share2, Mail, Lock, User, Github, CheckCircle2 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Separator } from "@/components/ui/separator"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 
-export default function SignInPage() {
-const router= useRouter();
+
+export default function SignUpPage() {
+  const router = useRouter()
+  
   const [isLoading, setIsLoading] = useState(false)
   const [showPassword, setShowPassword] = useState(false)
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false)
   const [formData, setFormData] = useState({
+    name: "",
     email: "",
-    password: "",})
+    password: "",
+    confirmPassword: "",
+    agreeToTerms: false,
+  })
 
-    const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsLoading(true)
 
     // Validate form
-    if (!formData.email || !formData.password) {
+    if (!formData.name || !formData.email || !formData.password || !formData.confirmPassword) {
+
+      setIsLoading(false)
+      return
+    }
+
+    if (formData.password !== formData.confirmPassword) {
+
+      setIsLoading(false)
+      return
+    }
+
+    if (formData.password.length < 8) {
+
+      setIsLoading(false)
+      return
+    }
+
+    if (!formData.agreeToTerms) {
 
       setIsLoading(false)
       return
@@ -45,16 +70,30 @@ const router= useRouter();
     // Simulate social login
     setTimeout(() => {
       setIsLoading(false)
+
       router.push("/dashboard")
     }, 1500)
   }
 
-    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value, type, checked } = e.target
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value,
+      [name]: type === "checkbox" ? checked : value,
     })
   }
+
+  const getPasswordStrength = (password: string) => {
+    if (password.length === 0) return { strength: 0, label: "" }
+    if (password.length < 6) return { strength: 1, label: "Weak" }
+    if (password.length < 8) return { strength: 2, label: "Fair" }
+    if (password.length >= 8 && /(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/.test(password)) {
+      return { strength: 4, label: "Strong" }
+    }
+    return { strength: 3, label: "Good" }
+  }
+
+  const passwordStrength = getPasswordStrength(formData.password)
 
   return (
     <div className="min-h-screen flex flex-col bg-white">
@@ -74,9 +113,9 @@ const router= useRouter();
         <div className="w-full max-w-md">
           <Card className="shadow-md border-0">
             <CardHeader className="text-center pb-6">
-              <CardTitle className="text-2xl font-bold">Welcome back</CardTitle>
+              <CardTitle className="text-2xl font-bold">Create your account</CardTitle>
               <CardDescription className="text-base">
-                Sign in to your MySpaceIs account to continue sharing across your devices.
+                Join MySpaceIs and start sharing content seamlessly across all your devices.
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
@@ -129,8 +168,25 @@ const router= useRouter();
                 </div>
               </div>
 
-              {/* Email/Password Form */}
+              {/* Registration Form */}
               <form onSubmit={handleSubmit} className="space-y-4">
+                <div className="space-y-2">
+                  <Label htmlFor="name">Full name</Label>
+                  <div className="relative">
+                    <User className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+                    <Input
+                      id="name"
+                      name="name"
+                      type="text"
+                      placeholder="Enter your full name"
+                      value={formData.name}
+                      onChange={handleInputChange}
+                      className="pl-10 h-11"
+                      required
+                    />
+                  </div>
+                </div>
+
                 <div className="space-y-2">
                   <Label htmlFor="email">Email address</Label>
                   <div className="relative">
@@ -156,7 +212,7 @@ const router= useRouter();
                       id="password"
                       name="password"
                       type={showPassword ? "text" : "password"}
-                      placeholder="Enter your password"
+                      placeholder="Create a password"
                       value={formData.password}
                       onChange={handleInputChange}
                       className="pl-10 pr-10 h-11"
@@ -170,22 +226,68 @@ const router= useRouter();
                       {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                     </button>
                   </div>
+                  {formData.password && (
+                    <div className="space-y-2">
+                      <div className="flex items-center justify-between text-xs">
+                        <span className="text-muted-foreground">Password strength</span>
+                        <span
+                          className={`font-medium ${
+                            passwordStrength.strength === 1
+                              ? "text-red-500"
+                              : passwordStrength.strength === 2
+                                ? "text-orange-500"
+                                : passwordStrength.strength === 3
+                                  ? "text-yellow-500"
+                                  : "text-green-500"
+                          }`}
+                        >
+                          {passwordStrength.label}
+                        </span>
+                      </div>
+                      <div className="flex space-x-1">
+                        {[1, 2, 3, 4].map((level) => (
+                          <div
+                            key={level}
+                            className={`h-1 flex-1 rounded-full ${
+                              level <= passwordStrength.strength
+                                ? passwordStrength.strength === 1
+                                  ? "bg-red-500"
+                                  : passwordStrength.strength === 2
+                                    ? "bg-orange-500"
+                                    : passwordStrength.strength === 3
+                                      ? "bg-yellow-500"
+                                      : "bg-green-500"
+                                : "bg-gray-200"
+                            }`}
+                          />
+                        ))}
+                      </div>
+                    </div>
+                  )}
                 </div>
 
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center space-x-2">
-                    <input
-                      id="remember"
-                      type="checkbox"
-                      className="h-4 w-4 rounded border-gray-300 text-black focus:ring-black"
-                    />
-                    <Label htmlFor="remember" className="text-sm font-normal">
-                      Remember me
-                    </Label>
-                  </div>
-                  <Link href="/auth/forgot-password" className="text-sm text-black hover:underline">
-                    Forgot password?
-                  </Link>
+              
+
+                <div className="flex items-start space-x-2">
+                  <input
+                    id="agreeToTerms"
+                    name="agreeToTerms"
+                    type="checkbox"
+                    checked={formData.agreeToTerms}
+                    onChange={handleInputChange}
+                    className="mt-1 h-4 w-4 rounded border-gray-300 text-black focus:ring-black"
+                    required
+                  />
+                  <Label htmlFor="agreeToTerms" className="text-sm font-normal leading-5">
+                    I agree to the{" "}
+                    <Link href="/terms" className="text-black hover:underline">
+                      Terms of Service
+                    </Link>{" "}
+                    and{" "}
+                    <Link href="/privacy" className="text-black hover:underline">
+                      Privacy Policy
+                    </Link>
+                  </Label>
                 </div>
 
                 <Button
@@ -193,33 +295,19 @@ const router= useRouter();
                   className="w-full h-11 bg-black hover:bg-gray-900 text-white"
                   disabled={isLoading}
                 >
-                  {isLoading ? "Signing in..." : "Sign in"}
+                  {isLoading ? "Creating account..." : "Create account"}
                 </Button>
               </form>
 
               {/* Footer */}
               <div className="text-center text-sm text-muted-foreground">
-                Don't have an account?{" "}
-                <Link href="/auth/signup" className="text-black hover:underline font-medium">
-                  Sign up for free
+                Already have an account?{" "}
+                <Link href="/auth/signin" className="text-black hover:underline font-medium">
+                  Sign in
                 </Link>
               </div>
             </CardContent>
           </Card>
-
-          {/* Additional Info */}
-          <div className="mt-8 text-center">
-            <p className="text-xs text-muted-foreground">
-              By signing in, you agree to our{" "}
-              <Link href="/terms" className="hover:underline">
-                Terms of Service
-              </Link>{" "}
-              and{" "}
-              <Link href="/privacy" className="hover:underline">
-                Privacy Policy
-              </Link>
-            </p>
-          </div>
         </div>
       </main>
     </div>
