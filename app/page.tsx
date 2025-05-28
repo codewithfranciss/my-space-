@@ -1,10 +1,30 @@
+'use client'
+
 import Link from "next/link"
 import Image from "next/image"
+import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { Smartphone, Tablet, Clock, Lock, Share2, FileText, ArrowRight, CheckCircle2 } from "lucide-react"
+import { Smartphone, Tablet, Clock, Lock, Menu, X, Share2, FileText, ArrowRight, CheckCircle2 } from "lucide-react"
 
 export default function LandingPage() {
+  const [menuOpen, setMenuOpen] = useState(false)
+  const [scrolled, setScrolled] = useState(false)
+  
+  // Handle scroll effect for header
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 10) {
+        setScrolled(true)
+      } else {
+        setScrolled(false)
+      }
+    }
+    
+    window.addEventListener('scroll', handleScroll)
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
+  
   const navItems = [
     { title: "Features", href: "#features" },
     { title: "How It Works", href: "#how-it-works" },
@@ -13,118 +33,105 @@ export default function LandingPage() {
   ]
 
   return (
-    <div className="flex justify-center items-center min-h-screen">
-    <div className="w-full px-4">
-      <header className="sticky top-0 z-50 w-full  border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-        <div className=" flex h-16 items-center justify-between px-8 md:px-6">
-          <div className="flex items-center gap-2">
-            <Share2 className="h-6 w-6 text-black" />
-            <span className="text-xl font-bold">MySpace</span>
-          </div>
+     <div className="flex min-h-screen flex-col">
+         <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+  <div className="mx-auto max-w-7xl flex h-16 items-center justify-between px-4 md:px-6">
+    
+    {/* Logo and Brand */}
+    <div className="flex items-center gap-2">
+      <Share2 className="h-6 w-6 text-black" />
+      <span className="text-xl font-bold">MySpaces</span>
+    </div>
 
-          {/* Desktop Navigation */}
-          <nav className="hidden md:flex gap-6">
-            {navItems.map((item, index) => (
-              <Link key={index} href={item.href} className="text-sm font-medium hover:text-gray-700 transition-colors">
-                {item.title}
-              </Link>
-            ))}
-          </nav>
+    {/* Desktop Navigation */}
+    <nav className="hidden md:flex gap-6">
+      {navItems.map((item, index) => (
+        <Link
+          key={index}
+          href={item.href}
+          className="text-sm font-medium hover:text-gray-700 transition-colors"
+        >
+          {item.title}
+        </Link>
+      ))}
+    </nav>
 
-          {/* Desktop CTA */}
-          <div className="hidden md:flex items-center gap-4">
+    {/* CTA Button */}
+    <div className="hidden md:flex items-center">
+      <Button className="bg-black hover:bg-gray-900 text-white" asChild>
+        <Link href="/dashboard">Get Started</Link>
+      </Button>
+    </div>
 
-            <Button className="bg-black hover:bg-gray-900 text-white" asChild>
-              <Link href="/dashboard">Get Started</Link>
-            </Button>
-          </div>
+  </div>
+</header>
 
-          {/* Mobile Navigation */}
-        </div>
-      </header>
-
-      <main className="flex justify-center  flex-col items-center">
+      <main className="flex-1">
         {/* Hero Section */}
 {/* Hero Section */}
-<section className="w-full py-12 md:py-24 lg:py-32 xl:py-48">
-  <div className="container mx-auto px-6 md:px-12 flex items-center justify-between gap-12">
-    <div className="w-full lg:w-1/2 space-y-8">
-      {/* Heading & Description */}
+<section className="w-full min-h-screen flex items-center justify-center md:py-24 lg:py-32">
+  <div className="container px-4 md:px-6">
+    <div className="flex flex-col items-center justify-center text-center space-y-8 max-w-4xl mx-auto">
+      {/* Hero Text */}
       <div className="space-y-6">
-        <h1 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl xl:text-6xl">
-          Share Across All Your Devices, Instantly
+        <h1 className="text-4xl font-bold tracking-tight sm:text-5xl md:text-6xl lg:text-7xl">
+          Share Across All Your Devices, <span className="text-gray-600">Instantly</span>
         </h1>
-        <p className="text-sm md:text-base lg:text-xl max-w-3xl text-muted-foreground">
-          Myspace provides seamless cross-device sharing of text, images, videos, and documents with real-time sync. Access your content anywhere, anytime.
+        <p className="text-lg md:text-xl lg:text-2xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
+          MySpaceIs provides seamless and quick cross-device sharing of text and files with real-time sync. Access your
+          content anywhere, anytime.
         </p>
       </div>
 
-      {/* Buttons */}
-      <div className="flex flex-col sm:flex-row gap-4 sm:gap-6">
-        <Button className="bg-black hover:bg-gray-900 text-white py-3 px-6 rounded-md" asChild>
+      {/* CTA Buttons */}
+      <div className="flex flex-col sm:flex-row gap-4 items-center justify-center">
+        <Button size="lg" className="bg-black hover:bg-gray-900 text-white px-8 py-3 text-lg" asChild>
           <Link href="/dashboard">Start Sharing Free</Link>
         </Button>
-        <Button variant="outline" className="py-3 px-6 rounded-md">
+        <Button size="lg" variant="outline" className="px-8 py-3 text-lg">
           See How It Works
         </Button>
       </div>
 
-      {/* Features */}
-      <div className="flex items-center gap-6 text-xs sm:text-sm">
+      {/* Trust Indicators */}
+      <div className="flex flex-wrap items-center justify-center gap-6 text-sm text-muted-foreground">
         <div className="flex items-center gap-2">
-          <CheckCircle2 className="h-4 w-4 text-black" />
+          <CheckCircle2 className="h-4 w-4 text-green-600" />
           <span>No credit card required</span>
         </div>
+
         <div className="flex items-center gap-2">
-          <CheckCircle2 className="h-4 w-4 text-black" />
+          <CheckCircle2 className="h-4 w-4 text-green-600" />
           <span>Cancel anytime</span>
         </div>
       </div>
     </div>
 
-    {/* Image */}
-    <div className="hidden lg:block w-1/2 mt-8 lg:mt-0">
-      <div className="relative w-full max-w-[500px] aspect-square mx-auto">
-        <Image
-          src="/placeholder.svg?height=500&width=500"
-          alt="Myspace devices sync illustration"
-          width={500}
-          height={500}
-          className="rounded-lg object-cover shadow-lg"
-        />
+    {/* Hero Image */}
+    <div className="mt-16 md:mt-20 lg:mt-24 flex justify-center">
+      <div className="relative w-full max-w-5xl">
+        <div className="relative aspect-[16/10] w-full overflow-hidden rounded-2xl border shadow-2xl">
+          <Image
+            src="/placeholder.svg?height=800&width=1280&text=MySpaceIs+Dashboard+Preview"
+            alt="MySpaceIs dashboard preview showing seamless device synchronization"
+            fill
+            className="object-cover"
+            priority
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent" />
+        </div>
+
+        {/* Floating elements */}
+        <div className="absolute -top-4 -left-4 w-8 h-8 bg-black rounded-full opacity-20 animate-pulse" />
+        <div className="absolute -bottom-4 -right-4 w-12 h-12 bg-gray-400 rounded-full opacity-20 animate-pulse delay-1000" />
+        <div className="absolute top-1/2 -left-6 w-6 h-6 bg-gray-600 rounded-full opacity-30 animate-pulse delay-500" />
       </div>
     </div>
   </div>
 </section>
 
-
-        {/* Rest of the page content remains the same */}
-        {/* Trusted By Section */}
-        {/* <section className="w-full py-6 md:py-12 bg-muted/50">
-          <div className="container px-4 md:px-6">
-            <div className="flex flex-col items-center justify-center space-y-4 text-center">
-              <div className="space-y-2">
-                <h2 className="text-xl font-medium">Trusted by thousands of users worldwide</h2>
-              </div>
-              <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-8">
-                {["Company 1", "Company 2", "Company 3", "Company 4", "Company 5"].map((company, i) => (
-                  <div key={i} className="flex items-center justify-center">
-                    <Image
-                      src={`/placeholder.svg?height=40&width=120&text=${company}`}
-                      alt={company}
-                      width={120}
-                      height={40}
-                      className="opacity-70 grayscale transition-all hover:opacity-100 hover:grayscale-0 max-w-[80px] sm:max-w-[120px]"
-                    />
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </section> */}
-
         {/* Features Section */}
-        <section id="features" className="w-full py-12 md:py-24 lg:py-32">
+<section id="features" className="w-full min-h-screen flex items-center justify-center py-16 md:py-24 lg:py-32">
           <div className="container px-4 md:px-6">
             <div className="flex flex-col items-center justify-center space-y-4 text-center">
               <div className="space-y-2">
@@ -133,7 +140,7 @@ export default function LandingPage() {
                   Everything You Need for Seamless Sharing
                 </h2>
                 <p className="max-w-[900px] text-muted-foreground text-sm md:text-base lg:text-xl">
-                  Myspace makes it easy to share content between all your devices with powerful features designed for
+                  MySpaceIs makes it easy to share content between all your devices with powerful features designed for
                   productivity.
                 </p>
               </div>
@@ -198,7 +205,7 @@ export default function LandingPage() {
         </section>
 
         {/* How It Works Section */}
-        <section id="how-it-works" className="w-full py-12 md:py-24 lg:py-32 bg-muted/50">
+        <section id="how-it-works" className=" w-full min-h-screen flex items-center justify-center py-16 md:py-24 lg:py-32">
           <div className="container px-4 md:px-6">
             <div className="flex flex-col items-center justify-center space-y-4 text-center">
               <div className="space-y-2">
@@ -207,7 +214,7 @@ export default function LandingPage() {
                   Simple, Fast, and Secure
                 </h2>
                 <p className="max-w-[900px] text-muted-foreground text-sm md:text-base lg:text-xl">
-                  Myspace makes sharing between devices as easy as possible with just a few simple steps.
+                  MySpaceIs makes sharing between devices as easy as possible with just a few simple steps.
                 </p>
               </div>
             </div>
@@ -238,7 +245,7 @@ export default function LandingPage() {
               <div className="relative w-full max-w-[800px] aspect-video">
                 <Image
                   src="/placeholder.svg?height=450&width=800&text=How+It+Works+Video"
-                  alt="How Myspace works"
+                  alt="How MySpaceIs works"
                   width={800}
                   height={450}
                   className="rounded-lg object-cover"
@@ -248,8 +255,8 @@ export default function LandingPage() {
           </div>
         </section>
 
-        {/* Pricing Section */}
-        <section id="pricing" className="w-full py-12 md:py-24 lg:py-32">
+          {/* Pricing Section */}
+        <section id="pricing" className="w-full min-h-screen flex items-center justify-center py-12 md:py-24 lg:py-32">
           <div className="container px-4 md:px-6">
             <div className="flex flex-col items-center justify-center space-y-4 text-center">
               <div className="space-y-2">
@@ -369,8 +376,8 @@ export default function LandingPage() {
           </div>
         </section>
 
-        {/* Testimonials Section */}
-        <section className="w-full py-12 md:py-24 lg:py-32 bg-muted/50">
+  {/* Testimonials Section */}
+        <section className="w-full min-h-screen flex items-center justify-center py-12 md:py-24 lg:py-32 bg-muted/50">
           <div className="container px-4 md:px-6">
             <div className="flex flex-col items-center justify-center space-y-4 text-center">
               <div className="space-y-2">
@@ -379,7 +386,7 @@ export default function LandingPage() {
                   What Our Users Say
                 </h2>
                 <p className="max-w-[900px] text-muted-foreground text-sm md:text-base lg:text-xl">
-                  Don't just take our word for it. Here's what people are saying about Myspace.
+                  Don't just take our word for it. Here's what people are saying about MySpaceIs.
                 </p>
               </div>
             </div>
@@ -387,7 +394,7 @@ export default function LandingPage() {
               {[
                 {
                   quote:
-                    "Myspace has completely changed how I work across my devices. No more emailing files to myself!",
+                    "MySpaceIs has completely changed how I work across my devices. No more emailing files to myself!",
                   author: "Sarah Johnson",
                   role: "Graphic Designer",
                 },
@@ -399,7 +406,7 @@ export default function LandingPage() {
                 },
                 {
                   quote:
-                    "Our team uses Myspace daily for sharing content. The real-time sync has made collaboration so much easier.",
+                    "Our team uses MySpaceIs daily for sharing content. The real-time sync has made collaboration so much easier.",
                   author: "Emily Rodriguez",
                   role: "Marketing Director",
                 },
@@ -430,7 +437,7 @@ export default function LandingPage() {
         </section>
 
         {/* FAQ Section */}
-        <section id="faq" className="w-full py-12 md:py-24 lg:py-32">
+        <section id="faq" className="w-full py-12 min-h-screen flex items-center justify-center md:py-24 lg:py-32">
           <div className="container px-4 md:px-6">
             <div className="flex flex-col items-center justify-center space-y-4 text-center">
               <div className="space-y-2">
@@ -439,30 +446,30 @@ export default function LandingPage() {
                   Frequently Asked Questions
                 </h2>
                 <p className="max-w-[900px] text-muted-foreground text-sm md:text-base lg:text-xl">
-                  Find answers to common questions about Myspace.
+                  Find answers to common questions about MySpaceIs.
                 </p>
               </div>
             </div>
             <div className="mx-auto grid max-w-3xl grid-cols-1 gap-6 py-8 md:py-12">
               {[
                 {
-                  q: "Is my data secure with Myspace?",
+                  q: "Is my data secure with MySpaceIs?",
                   a: "Yes, all your data is protected with end-to-end encryption. We never have access to your unencrypted content, and your data is only stored on your devices and our secure servers.",
                 },
                 {
-                  q: "Which platforms does Myspace support?",
-                  a: "Myspace works on iOS, Android, Windows, macOS, and all modern web browsers, allowing you to share content across virtually any device.",
+                  q: "Which platforms does MySpaceIs support?",
+                  a: "MySpaceIs works on iOS, Android, Windows, macOS, and all modern web browsers, allowing you to share content across virtually any device.",
                 },
                 {
-                  q: "Can I share with people who don't have Myspace?",
-                  a: "Yes, you can generate shareable links that anyone can access, even if they don't have a Myspace account.",
+                  q: "Can I share with people who don't have MySpaceIs?",
+                  a: "Yes, you can generate shareable links that anyone can access, even if they don't have a MySpaceIs account.",
                 },
                 {
                   q: "How long is my data stored?",
                   a: "Free accounts store data for 7 days, Pro accounts for 30 days, and Team accounts have unlimited history. You can also manually delete content at any time.",
                 },
                 {
-                  q: "Can I use Myspace offline?",
+                  q: "Can I use MySpaceIs offline?",
                   a: "Yes, you can access previously synced content offline. Any new content you create while offline will sync automatically when you reconnect to the internet.",
                 },
               ].map((faq, i) => (
@@ -476,8 +483,8 @@ export default function LandingPage() {
         </section>
 
         {/* CTA Section */}
-        <section className="w-full py-12 md:py-24 lg:py-32 bg-black text-white">
-          <div className="container px-4 md:px-6">
+        <section className="w-full py-12 min-h flex items-center justify-center md:py-24 lg:py-32 text-center bg-black text-white">
+          <div className="container px-4  md:px-6">
             <div className="flex flex-col items-center justify-center space-y-4 text-center">
               <div className="space-y-2">
                 <h2 className="text-2xl sm:text-3xl font-bold tracking-tighter md:text-4xl/tight">
@@ -491,19 +498,23 @@ export default function LandingPage() {
                 <Button className="bg-white text-black hover:bg-gray-100" asChild>
                   <Link href="/dashboard">Get Started Free</Link>
                 </Button>
+                <Button variant="outline" className="border-white text-black" asChild>
+                  <Link href="/dashboard">Contact Sales</Link>
+                </Button>
               </div>
             </div>
           </div>
         </section>
+
       </main>
 
-      <footer className="w-full border-t bg-background py-8 md:py-12">
+       <footer className="w-full border-t bg-background py-8 md:py-12">
         <div className="container px-4 md:px-6">
           <div className="grid grid-cols-2 gap-8 md:grid-cols-4 lg:grid-cols-5">
             <div className="flex flex-col gap-2 col-span-2 md:col-span-1">
               <div className="flex items-center gap-2">
                 <Share2 className="h-6 w-6 text-black" />
-                <span className="text-lg font-bold">Myspace</span>
+                <span className="text-lg font-bold">MySpaceIs</span>
               </div>
               <p className="text-sm text-muted-foreground">Seamless cross-device sharing with real-time sync.</p>
               <div className="mt-2 flex gap-2">
@@ -627,7 +638,7 @@ export default function LandingPage() {
           </div>
           <div className="mt-8 border-t pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
             <p className="text-xs text-muted-foreground">
-              © {new Date().getFullYear()} Myspace. All rights reserved.
+              © {new Date().getFullYear()} MySpaceIs. All rights reserved.
             </p>
             <nav className="flex flex-wrap gap-4 justify-center">
               <Link href="#" className="text-xs text-muted-foreground hover:text-foreground">
@@ -643,7 +654,7 @@ export default function LandingPage() {
           </div>
         </div>
       </footer>
-    </div>
-    </div>
+
+     </div>
   )
 }
