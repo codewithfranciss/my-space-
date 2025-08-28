@@ -104,10 +104,7 @@ export default function SpacesPage() {
     setSpaceToDelete(null)
     setShowDeleteDialog(false)
 
-    toast({
-      title: "Space deleted",
-      description: "Your space has been deleted successfully.",
-    })
+
   }
 
   const formatDate = (dateString: string) => {
