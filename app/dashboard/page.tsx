@@ -192,7 +192,7 @@ export default function Dashboard() {
         </div>
       </header>
 
-      <main className="flex-1 container py-12">
+      <main className="flex-1 container py-12 mx-auto">
         <div className="max-w-4xl mx-auto">
           <h1 className="text-3xl font-bold mb-6">Dashboard</h1>
 
@@ -205,7 +205,7 @@ export default function Dashboard() {
             <TabsContent value="create">
               <Card>
                 <CardHeader>
-                  <CardTitle>Create a New Space</CardTitle>
+                  <CardTitle >Create a New Space</CardTitle>
                   <CardDescription>Create a space to share content across your devices or with others.</CardDescription>
                 </CardHeader>
                 <CardContent>
