@@ -70,9 +70,9 @@ const router= useRouter();
       </header>
 
       {/* Main Content */}
-      <main className="flex-1 flex items-center justify-center p-4 md:p-8">
+      <main className="flex-1 flex items-center justify-center md:p-8">
         <div className="w-full max-w-md">
-          <Card className="shadow-md border-0">
+          <Card className=" border-0">
             <CardHeader className="text-center pb-6">
               <CardTitle className="text-2xl font-bold">Welcome back</CardTitle>
               <CardDescription className="text-base">
@@ -120,17 +120,17 @@ const router= useRouter();
               </div>
 
               {/* Divider */}
-              <div className="relative">
+              {/* <div className="relative">
                 <div className="absolute inset-0 flex items-center">
                   <Separator className="w-full" />
                 </div>
                 <div className="relative flex justify-center text-xs uppercase">
                   <span className="bg-white px-2 text-muted-foreground">Or continue with email</span>
                 </div>
-              </div>
+              </div> */}
 
               {/* Email/Password Form */}
-              <form onSubmit={handleSubmit} className="space-y-4">
+              {/* <form onSubmit={handleSubmit} className="space-y-4">
                 <div className="space-y-2">
                   <Label htmlFor="email">Email address</Label>
                   <div className="relative">
@@ -195,15 +195,15 @@ const router= useRouter();
                 >
                   {isLoading ? "Signing in..." : "Sign in"}
                 </Button>
-              </form>
+              </form> */}
 
               {/* Footer */}
-              <div className="text-center text-sm text-muted-foreground">
+              {/* <div className="text-center text-sm text-muted-foreground">
                 Don't have an account?{" "}
                 <Link href="/auth/signup" className="text-black hover:underline font-medium">
                   Sign up for free
                 </Link>
-              </div>
+              </div> */}
             </CardContent>
           </Card>
 
