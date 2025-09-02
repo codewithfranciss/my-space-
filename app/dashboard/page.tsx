@@ -75,7 +75,7 @@ const RECENT_SPACES = [
 ]
 
 export default function Dashboard() {
-
+ 
   const [step, setStep] = useState(1)
   const [spaceName, setSpaceName] = useState("")
   const [isPrivate, setIsPrivate] = useState(false)
@@ -95,20 +95,12 @@ export default function Dashboard() {
 
     // Validate form
     if (!spaceName.trim()) {
-      // toast({
-      //   title: "Space name required",
-      //   description: "Please enter a name for your space.",
-      //   variant: "destructive",
-      // })
+
       return
     }
 
     if (isPrivate && (!pin || pin.length < 4)) {
-      // toast({
-      //   title: "PIN required",
-      //   description: "Please enter a PIN with at least 4 digits for your private space.",
-      //   variant: "destructive",
-      // })
+
       return
     }
 
@@ -120,10 +112,7 @@ export default function Dashboard() {
 
   const handleCopyLink = () => {
     navigator.clipboard.writeText(`https://myspaceis.com/space/${createdSpaceId}`)
-    // toast({
-    //   title: "Link copied!",
-    //   description: "Space link copied to clipboard.",
-    // })
+
   }
 
   const resetForm = () => {
@@ -140,10 +129,7 @@ export default function Dashboard() {
   const handleDeleteSpace = () => {
     if (!spaceToDelete) return
 
-    // toast({
-    //   title: "Space deleted",
-    //   description: "Your space has been deleted successfully.",
-    // })
+  
 
     setSpaceToDelete(null)
     setShowDeleteDialog(false)
