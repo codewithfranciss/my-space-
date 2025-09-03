@@ -69,12 +69,12 @@ export default function LandingPage() {
       <main className="flex-1">
         {/* Hero Section */}
 {/* Hero Section */}
-<section className="w-full min-h-screen flex items-center justify-center md:py-24 lg:py-32">
-  <div className="container px-4 md:px-6">
+<section className="w-full min-h-screen flex items-center justify-center">
+  <div className="container px-4  md:px-6 py-20 md:py-32">
     <div className="flex flex-col items-center justify-center text-center space-y-8 max-w-4xl mx-auto">
       {/* Hero Text */}
       <div className="space-y-6">
-        <h1 className="text-4xl font-bold tracking-tight sm:text-5xl md:text-6xl lg:text-7xl">
+          <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl md:text-6xl lg:text-7xl mb-6">
           Share Across All Your Devices, <span className="text-gray-600">Instantly</span>
         </h1>
         <p className="text-lg md:text-xl lg:text-2xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
