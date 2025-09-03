@@ -212,14 +212,7 @@ export default function SpacesPage() {
 
       <main className="flex-1 container py-4 sm:py-8 px-4 sm:px-6 mx-auto">
         <div className="max-w-5xl mx-auto">
-          <div className="flex items-center justify-between mb-4 sm:mb-6">
-            <h1 className="text-2xl sm:text-3xl font-bold">My Spaces</h1>
-            <Button className="bg-black hover:bg-gray-900 text-white" asChild>
-              <Link href="/dashboard">
-                <Plus className="mr-2 h-4 w-4" /> <span className="hidden xs:inline">Create Space</span>
-              </Link>
-            </Button>
-          </div>
+
 
           <div className="mb-4 sm:mb-6">
             <div className="relative">
