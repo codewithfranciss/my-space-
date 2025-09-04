@@ -179,7 +179,7 @@ export default function Dashboard() {
             <Link href="/dashboard" className="text-sm font-medium hover:text-gray-700 transition-colors">
               Dashboard
             </Link>
-            <Link href="/dashboard/spaces" className="text-sm font-medium hover:text-gray-700 transition-colors">
+            <Link href="/spaces" className="text-sm font-medium hover:text-gray-700 transition-colors">
               My Spaces
             </Link>
             <Link href="/dashboard/settings" className="text-sm font-medium hover:text-gray-700 transition-colors">
@@ -194,10 +194,8 @@ export default function Dashboard() {
 
       <main className="flex-1 container py-12 mx-auto">
         <div className="max-w-4xl mx-auto">
-          <h1 className="text-3xl font-bold mb-6">Dashboard</h1>
-
-          <Tabs defaultValue="recent" className="w-full">
-            <TabsList className="grid w-full grid-cols-2 mb-8">
+          <Tabs defaultValue="recent" className="max-w-5xl">
+            <TabsList className="grid mx-auto w-full grid-cols-2 mb-4 sm:mb-8">
               <TabsTrigger value="create">Create Space</TabsTrigger>
               <TabsTrigger value="recent">Recent Spaces</TabsTrigger>
             </TabsList>
