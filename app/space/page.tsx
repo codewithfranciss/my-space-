@@ -47,9 +47,10 @@ import {
   SheetTrigger,
   SheetClose,
 } from "@/components/ui/sheet"
-import { useToast } from "@/hooks/use-toast"
+
 import { cn } from "@/lib/utils"
 import { QrCode } from "lucide-react"
+
 
 // Mock data for demonstration
 const MOCK_SPACE = {
@@ -62,9 +63,18 @@ const MOCK_SPACE = {
   createdAt: new Date().toISOString(),
   expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(),
 }
-
+type MessageType = {
+  id: string
+  type: "text" | "image" | "video" | "file"
+  content: string
+  sender: string
+  timestamp: string
+  isMine: boolean
+  caption?: string
+  fileSize?: string
+}
 // Mock messages for demonstration
-const MOCK_MESSAGES = [
+const MOCK_MESSAGES : MessageType[] = [
   {
     id: "1",
     type: "text",
@@ -110,21 +120,12 @@ const MOCK_MESSAGES = [
   },
 ]
 
-type MessageType = {
-  id: string
-  type: "text" | "image" | "video" | "file"
-  content: string
-  sender: string
-  timestamp: string
-  isMine: boolean
-  caption?: string
-  fileSize?: string
-}
+
 
 export default function SpacePage() {
   const params = useParams()
   const router = useRouter()
-  const { toast } = useToast()
+  
   const [messages, setMessages] = useState<MessageType[]>(MOCK_MESSAGES)
   const [newMessage, setNewMessage] = useState("")
   const [isUploading, setIsUploading] = useState(false)
@@ -202,29 +203,17 @@ export default function SpacePage() {
 
       setMessages([...messages, newMsg])
       setIsUploading(false)
-
-      toast({
-        title: "Upload complete",
-        description: `Your ${type} has been uploaded successfully.`,
-      })
     }, 1500)
   }
 
   const handleDeleteSpace = () => {
     // In a real app, this would make an API call to delete the space
-    toast({
-      title: "Space deleted",
-      description: "Your space has been deleted successfully.",
-    })
     router.push("/dashboard/spaces")
   }
 
   const handleCopyLink = () => {
     navigator.clipboard.writeText(`https://myspaceis.com/space/${spaceId}`)
-    toast({
-      title: "Link copied!",
-      description: "Space link copied to clipboard.",
-    })
+
   }
 
   const formatTimestamp = (timestamp: string) => {
@@ -602,10 +591,6 @@ export default function SpacePage() {
                     size="sm"
                     onClick={() => {
                       navigator.clipboard.writeText(MOCK_SPACE.pin)
-                      toast({
-                        title: "PIN copied!",
-                        description: "PIN code copied to clipboard.",
-                      })
                     }}
                   >
                     <Copy className="h-4 w-4 mr-1" /> Copy
@@ -661,7 +646,7 @@ export default function SpacePage() {
             </div>
             <div>
               <h3 className="text-sm font-medium mb-1">Space ID</h3>
-              <p className="text-base font-mono text-sm break-all">{spaceId}</p>
+              <p className="font-mono text-sm break-all">{spaceId}</p>
             </div>
           </div>
         </DialogContent>
