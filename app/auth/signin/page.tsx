@@ -1,7 +1,7 @@
 "use client"
 
 import type React from "react"
-
+import { supabaseClient } from "@/lib/supabaseClient"
 import { useState } from "react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
@@ -22,31 +22,16 @@ const router= useRouter();
 
     const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    setIsLoading(true)
 
-    // Validate form
-    if (!formData.email || !formData.password) {
-
-      setIsLoading(false)
-      return
-    }
-
-    // Simulate API call
-    setTimeout(() => {
-      setIsLoading(false)
-
-      router.push("/dashboard")
-    }, 1500)
   }
 
-  const handleSocialLogin = (provider: string) => {
-    setIsLoading(true)
-
-    // Simulate social login
-    setTimeout(() => {
-      setIsLoading(false)
-      router.push("/dashboard")
-    }, 1500)
+  const handleSocialLogin = async (provider: string) => {
+     const {data, error} = await supabaseClient.auth.signInWithOAuth({
+      provider: provider as 'google' | 'github',
+      options:{
+        redirectTo: 'http://localhost:3000/auth/callback'
+      }
+    })
   }
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
