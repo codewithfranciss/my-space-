@@ -285,85 +285,98 @@ export default function SpacePage() {
           </div>
 
           {/* Mobile Menu */}
-          <div className="md:hidden">
-            <Sheet open={showMobileMenu} onOpenChange={setShowMobileMenu}>
-              <SheetTrigger asChild>
-                <Button variant="ghost" size="icon">
-                  <Menu className="h-5 w-5" />
-                </Button>
-              </SheetTrigger>
-              <SheetContent side="right" className="w-[250px] sm:w-[300px]">
-                <SheetHeader>
-                  <SheetTitle>Space Menu</SheetTitle>
-                  <SheetDescription>{MOCK_SPACE.name}</SheetDescription>
-                </SheetHeader>
-                <div className="py-4 space-y-4">
-                  <div className="space-y-2">
-                    <h3 className="text-sm font-medium">Actions</h3>
-                    <div className="space-y-2">
-                      <SheetClose asChild>
-                        <Button
-                          variant="outline"
-                          className="w-full justify-start"
-                          onClick={() => setShowShareDialog(true)}
-                        >
-                          <Share2 className="mr-2 h-4 w-4" />
-                          Share Space
-                        </Button>
-                      </SheetClose>
-                      <SheetClose asChild>
-                        <Button
-                          variant="outline"
-                          className="w-full justify-start"
-                          onClick={() => setShowInfoDialog(true)}
-                        >
-                          <Clock className="mr-2 h-4 w-4" />
-                          Space Info
-                        </Button>
-                      </SheetClose>
-                      <SheetClose asChild>
-                        <Button variant="outline" className="w-full justify-start" asChild>
-                          <Link href={`/space/${spaceId}/settings`}>
-                            <Settings className="mr-2 h-4 w-4" />
-                            Space Settings
-                          </Link>
-                        </Button>
-                      </SheetClose>
-                    </div>
-                  </div>
-                  <div className="space-y-2">
-                    <h3 className="text-sm font-medium">Navigation</h3>
-                    <div className="space-y-2">
-                      <SheetClose asChild>
-                        <Button variant="outline" className="w-full justify-start" asChild>
-                          <Link href="/dashboard/spaces">
-                            <ChevronLeft className="mr-2 h-4 w-4" />
-                            Back to Spaces
-                          </Link>
-                        </Button>
-                      </SheetClose>
-                      <SheetClose asChild>
-                        <Button variant="outline" className="w-full justify-start" asChild>
-                          <Link href="/dashboard">
-                            <ChevronLeft className="mr-2 h-4 w-4" />
-                            Back to Dashboard
-                          </Link>
-                        </Button>
-                      </SheetClose>
-                    </div>
-                  </div>
-                  <div className="pt-4">
-                    <SheetClose asChild>
-                      <Button variant="destructive" className="w-full" onClick={() => setShowDeleteDialog(true)}>
-                        <Trash2 className="mr-2 h-4 w-4" />
-                        Delete Space
-                      </Button>
-                    </SheetClose>
-                  </div>
-                </div>
-              </SheetContent>
-            </Sheet>
+<div className="md:hidden">
+  <Sheet open={showMobileMenu} onOpenChange={setShowMobileMenu}>
+    <SheetTrigger asChild>
+      <Button variant="ghost" size="icon" className="p-2 hover:bg-gray-100 transition-colors">
+        <Menu className="h-5 w-5" />
+      </Button>
+    </SheetTrigger>
+    <SheetContent 
+      side="right" 
+      className="w-[280px] sm:w-[320px] p-0 bg-white border-l border-gray-200 shadow-xl"
+    >
+      {/* Header */}
+      <div className="px-6 py-5 bg-gray-50 border-b border-gray-200">
+        <div className="flex items-center justify-between">
+          <div>
+            <h2 className="text-lg font-semibold text-gray-900 truncate">
+              {MOCK_SPACE.name}
+            </h2>
+      
           </div>
+
+        </div>
+      </div>
+
+      <div className="px-6 py-6 space-y-8">
+        {/* Quick Actions */}
+        <div className="space-y-4">
+          <h3 className="text-xs font-semibold text-gray-400 uppercase tracking-wider px-1">
+            Actions
+          </h3>
+          <div className="space-y-2">
+            <SheetClose asChild>
+              <Button
+                variant="ghost"
+                className="w-full justify-start h-11 px-3 rounded-xl hover:bg-gray-100 transition-all duration-200 group"
+                onClick={() => setShowShareDialog(true)}
+              >
+                <div className="mr-3 p-1.5 rounded-lg bg-gray-100 text-gray-700 group-hover:bg-gray-200 transition-colors">
+                  <Share2 className="h-4 w-4" />
+                </div>
+                <span className="font-medium text-gray-900">Share Space</span>
+              </Button>
+            </SheetClose>
+            
+            <SheetClose asChild>
+              <Button
+                variant="ghost"
+                className="w-full justify-start h-11 px-3 rounded-xl hover:bg-gray-100 transition-all duration-200 group"
+                onClick={() => setShowInfoDialog(true)}
+              >
+                <div className="mr-3 p-1.5 rounded-lg bg-gray-100 text-gray-700 group-hover:bg-gray-200 transition-colors">
+                  <Clock className="h-4 w-4" />
+                </div>
+                <span className="font-medium text-gray-900">Space Info</span>
+              </Button>
+            </SheetClose>
+            
+            <SheetClose asChild>
+              <Button 
+                variant="ghost" 
+                className="w-full justify-start h-11 px-3 rounded-xl hover:bg-gray-100 transition-all duration-200 group" 
+                asChild
+              >
+                <Link href={`/space/${spaceId}/settings`} className="flex items-center w-full">
+                  <div className="mr-3 p-1.5 rounded-lg bg-gray-100 text-gray-700 group-hover:bg-gray-200 transition-colors">
+                    <Settings className="h-4 w-4" />
+                  </div>
+                  <span className="font-medium text-gray-900">Space Settings</span>
+                </Link>
+              </Button>
+            </SheetClose>
+          </div>
+        </div>
+      </div>
+
+      {/* Danger Zone */}
+      <div className="absolute bottom-0 left-0 right-0 p-6 bg-gray-50 border-t border-gray-200">
+        <SheetClose asChild>
+          <Button 
+            variant="ghost" 
+            className="w-full h-11 rounded-xl hover:bg-gray-100 transition-all duration-200 group font-medium"
+          >
+            <div className="mr-3 p-1.5 rounded-lg bg-gray-100 text-gray-700 group-hover:bg-gray-200 transition-colors">
+              <Trash2 className="h-4 w-4" />
+            </div>
+            <span className="text-gray-900">Delete Space</span>
+          </Button>
+        </SheetClose>
+      </div>
+    </SheetContent>
+  </Sheet>
+</div>
         </div>
       </header>
 
