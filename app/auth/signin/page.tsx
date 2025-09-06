@@ -1,7 +1,7 @@
 "use client"
 
 import type React from "react"
-import { supabaseClient } from "@/lib/supabaseClient"
+import { supabase } from "@/lib/supabaseClient"
 import { useState } from "react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
@@ -26,7 +26,7 @@ const router= useRouter();
   }
 
   const handleSocialLogin = async (provider: string) => {
-     const {data, error} = await supabaseClient.auth.signInWithOAuth({
+     const {data, error} = await supabase.auth.signInWithOAuth({
       provider: provider as 'google' | 'github',
       options:{
         redirectTo: 'http://localhost:3000/auth/callback'
