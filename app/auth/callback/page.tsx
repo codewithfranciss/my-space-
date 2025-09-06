@@ -18,12 +18,16 @@ export default function AuthCallbackPage() {
 
       if (data.session) {
         const user = data.session.user;
-
+        console.log("User session:", user);
+                const name =
+          user.user_metadata.full_name ||
+          user.user_metadata.name ||
+          "";
         // Upsert user into 'users' table
         const { error: dbError } = await supabase.from("users").upsert({
           id: user.id,
           email: user.email,
-          updated_at: new Date(),
+          name,
         });
 
         if (dbError) console.error("Error upserting user:", dbError.message);
