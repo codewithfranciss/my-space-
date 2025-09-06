@@ -14,6 +14,10 @@ import {
   Clock,
   Lock,
   Globe,
+  Layers,
+  User,
+  Home,
+  LayoutDashboard,
   Menu,
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
@@ -157,55 +161,141 @@ export default function SpacesPage() {
           </nav>
 
           {/* Mobile Menu Button */}
-          <div className="flex items-center gap-2">
+<div className="flex items-center gap-2">
             <div className="md:hidden">
               <Sheet open={showMobileMenu} onOpenChange={setShowMobileMenu}>
                 <SheetTrigger asChild>
-                  <Button variant="ghost" size="icon">
+                  <Button variant="ghost" size="icon" className="p-2 hover:bg-gray-100 transition-colors">
                     <Menu className="h-5 w-5" />
                   </Button>
                 </SheetTrigger>
-                <SheetContent side="right" className="w-[250px] sm:w-[300px]">
-                  <SheetHeader>
-                    <SheetTitle>Menu</SheetTitle>
-                    <SheetDescription>Navigate to different sections</SheetDescription>
-                  </SheetHeader>
-                  <div className="py-4 space-y-4">
-                    <div className="space-y-2">
-                      <h3 className="text-sm font-medium">Navigation</h3>
+                <SheetContent 
+                  side="right" 
+                  className="w-[280px] sm:w-[320px] p-0 bg-white border-l border-gray-200 shadow-xl"
+                >
+                  {/* Header */}
+                  <div className="px-6 py-5 bg-gray-50 border-b border-gray-200">
+                    <div>
+                      <h2 className="text-lg font-semibold text-gray-900">
+                        Menu
+                      </h2>
+                      <p className="text-sm text-gray-500 mt-0.5">Navigate to different sections</p>
+                    </div>
+                  </div>
+
+                  <div className="px-6 py-6 space-y-8">
+                    {/* Main Navigation */}
+                    <div className="space-y-4">
+                      <h3 className="text-xs font-semibold text-gray-400 uppercase tracking-wider px-1">
+                        Navigation
+                      </h3>
                       <div className="space-y-2">
                         <SheetClose asChild>
-                          <Button variant="outline" className="w-full justify-start" asChild>
-                            <Link href="/dashboard">Dashboard</Link>
+                          <Button 
+                            variant="ghost" 
+                            className="w-full justify-start h-11 px-3 rounded-xl hover:bg-gray-100 transition-all duration-200 group" 
+                            asChild
+                          >
+                            <Link href="/dashboard" className="flex items-center w-full">
+                              <div className="mr-3 p-1.5 rounded-lg bg-gray-100 text-gray-700 group-hover:bg-gray-200 transition-colors">
+                                <LayoutDashboard className="h-4 w-4" />
+                              </div>
+                              <span className="font-medium text-gray-900">Dashboard</span>
+                            </Link>
                           </Button>
                         </SheetClose>
+
                         <SheetClose asChild>
-                          <Button variant="default" className="w-full justify-start bg-black text-white" asChild>
-                            <Link href="/dashboard/spaces">My Spaces</Link>
+                          <Button 
+                            variant="ghost" 
+                            className="w-full justify-start h-11 px-3 rounded-xl bg-black text-white hover:bg-gray-800 transition-all duration-200 group" 
+                            asChild
+                          >
+                            <Link href="/dashboard/spaces" className="flex items-center w-full">
+                              <div className="mr-3 p-1.5 rounded-lg bg-white/20 text-white transition-colors">
+                                <Layers className="h-4 w-4" />
+                              </div>
+                              <span className="font-medium">My Spaces</span>
+                            </Link>
                           </Button>
                         </SheetClose>
+
                         <SheetClose asChild>
-                          <Button variant="outline" className="w-full justify-start" asChild>
-                            <Link href="/dashboard/settings">Settings</Link>
+                          <Button 
+                            variant="ghost" 
+                            className="w-full justify-start h-11 px-3 rounded-xl hover:bg-gray-100 transition-all duration-200 group" 
+                            asChild
+                          >
+                            <Link href="/dashboard/settings" className="flex items-center w-full">
+                              <div className="mr-3 p-1.5 rounded-lg bg-gray-100 text-gray-700 group-hover:bg-gray-200 transition-colors">
+                                <Settings className="h-4 w-4" />
+                              </div>
+                              <span className="font-medium text-gray-900">Settings</span>
+                            </Link>
                           </Button>
                         </SheetClose>
                       </div>
                     </div>
-                    <div className="pt-4">
-                      <SheetClose asChild>
-                        <Button variant="outline" className="w-full justify-start" asChild>
-                          <Link href="/">Back to Home</Link>
-                        </Button>
-                      </SheetClose>
+
+                    {/* Quick Actions */}
+                    <div className="space-y-4">
+                      <h3 className="text-xs font-semibold text-gray-400 uppercase tracking-wider px-1">
+                        Quick Actions
+                      </h3>
+                      <div className="space-y-2">
+                        <SheetClose asChild>
+                          <Button 
+                            variant="ghost" 
+                            className="w-full justify-start h-11 px-3 rounded-xl hover:bg-gray-100 transition-all duration-200 group" 
+                            asChild
+                          >
+                            <Link href="/dashboard/spaces/new" className="flex items-center w-full">
+                              <div className="mr-3 p-1.5 rounded-lg bg-gray-100 text-gray-700 group-hover:bg-gray-200 transition-colors">
+                                <Plus className="h-4 w-4" />
+                              </div>
+                              <span className="font-medium text-gray-900">Create Space</span>
+                            </Link>
+                          </Button>
+                        </SheetClose>
+
+                        <SheetClose asChild>
+                          <Button 
+                            variant="ghost" 
+                            className="w-full justify-start h-11 px-3 rounded-xl hover:bg-gray-100 transition-all duration-200 group" 
+                            asChild
+                          >
+                            <Link href="/dashboard/profile" className="flex items-center w-full">
+                              <div className="mr-3 p-1.5 rounded-lg bg-gray-100 text-gray-700 group-hover:bg-gray-200 transition-colors">
+                                <User className="h-4 w-4" />
+                              </div>
+                              <span className="font-medium text-gray-900">Profile</span>
+                            </Link>
+                          </Button>
+                        </SheetClose>
+                      </div>
                     </div>
+                  </div>
+
+                  {/* Footer */}
+                  <div className="absolute bottom-0 left-0 right-0 p-6 bg-gray-50 border-t border-gray-200">
+                    <SheetClose asChild>
+                      <Button 
+                        variant="ghost" 
+                        className="w-full h-11 rounded-xl hover:bg-gray-100 transition-all duration-200 group font-medium" 
+                        asChild
+                      >
+                        <Link href="/" className="flex items-center justify-center w-full">
+                          <div className="mr-3 p-1.5 rounded-lg bg-gray-100 text-gray-700 group-hover:bg-gray-200 transition-colors">
+                            <Home className="h-4 w-4" />
+                          </div>
+                          <span className="text-gray-900">Back to Home</span>
+                        </Link>
+                      </Button>
+                    </SheetClose>
                   </div>
                 </SheetContent>
               </Sheet>
             </div>
-
-            <Button variant="outline" asChild className="hidden md:flex">
-              <Link href="/">Back to Home</Link>
-            </Button>
           </div>
         </div>
       </header>

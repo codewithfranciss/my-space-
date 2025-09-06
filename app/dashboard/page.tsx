@@ -87,6 +87,9 @@ export default function Dashboard() {
   const [searchQuery, setSearchQuery] = useState("")
   const [showDeleteDialog, setShowDeleteDialog] = useState(false)
   const [spaceToDelete, setSpaceToDelete] = useState<string | null>(null)
+   const USER = { storageUsed: 250, storageLimit: 1000 };
+ const calculateStoragePercentage = () => Math.round((USER.storageUsed / USER.storageLimit) * 100);
+const setActiveTab = (tab) => { /* your function */ };
 
   const filteredSpaces = RECENT_SPACES.filter((space) => space.name.toLowerCase().includes(searchQuery.toLowerCase()))
 
@@ -168,27 +171,63 @@ export default function Dashboard() {
 
   return (
     <div className="flex min-h-screen flex-col">
-      <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+<header className="sticky top-0 z-50 w-full border-b border-gray-200/80 bg-white/95 backdrop-blur-md shadow-sm supports-[backdrop-filter]:bg-white/60">
         <div className="mx-auto max-w-7xl flex h-16 items-center justify-between px-4 md:px-6">
-              <div className="flex items-center gap-2">
-      <Share2 className="h-6 w-6 text-black" />
-      <span className="text-xl font-bold">MySpaces</span>
-    </div>
+          {/* Logo */}
+          <div className="flex items-center gap-3">
+            <div className="p-2 rounded-xl bg-black text-white">
+              <Share2 className="h-5 w-5" />
+            </div>
+            <span className="text-xl font-bold text-gray-900 tracking-tight">MySpaces</span>
+          </div>
 
-          <nav className="hidden md:flex gap-6">
-            <Link href="/dashboard" className="text-sm font-medium hover:text-gray-700 transition-colors">
+          {/* Desktop Navigation */}
+          <nav className="hidden md:flex items-center gap-8">
+            <Link 
+              href="/dashboard" 
+              className="text-sm font-medium text-gray-600 hover:text-black transition-colors duration-200 relative group"
+            >
               Dashboard
+              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-black transition-all duration-200 group-hover:w-full"></span>
             </Link>
-            <Link href="/spaces" className="text-sm font-medium hover:text-gray-700 transition-colors">
+            <Link 
+              href="/spaces" 
+              className="text-sm font-medium text-black transition-colors duration-200 relative group"
+            >
               My Spaces
+              <span className="absolute -bottom-1 left-0 w-full h-0.5 bg-black"></span>
             </Link>
-            <Link href="/dashboard/settings" className="text-sm font-medium hover:text-gray-700 transition-colors">
+            <Link 
+              href="/settings" 
+              className="text-sm font-medium text-gray-600 hover:text-black transition-colors duration-200 relative group"
+            >
               Settings
+              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-black transition-all duration-200 group-hover:w-full"></span>
             </Link>
           </nav>
-          <Button variant="outline" asChild>
-            <Link href="/">Back to Home</Link>
-          </Button>
+
+          {/* Storage & Upgrade Section */}
+          <div className="flex items-center gap-4">
+            {/* Storage Card */}
+            <div className="hidden lg:flex items-center gap-3 px-4 py-2 transition-colors">
+              <div className="flex flex-col min-w-[140px]">
+                <div className="flex items-center justify-between mb-1">
+                  <span className="text-xs font-medium text-gray-600">Free Plan</span>
+                  <span className="text-xs text-gray-500">{calculateStoragePercentage()}%</span>
+                </div>
+                <div className="h-1.5 w-full rounded-full bg-gray-200 overflow-hidden">
+                  <div
+                    className="h-full rounded-full bg-black transition-all duration-300"
+                    style={{ width: `${calculateStoragePercentage()}%` }}
+                  ></div>
+                </div>
+                <div className="flex justify-between mt-1">
+                  <span className="text-xs text-gray-500">{USER.storageUsed} MB</span>
+                  <span className="text-xs text-gray-500">{USER.storageLimit} MB</span>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </header>
 
