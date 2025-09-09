@@ -4,11 +4,13 @@ import Link from 'next/link'
 import { Sheet, SheetContent, SheetTrigger, SheetClose, SheetHeader, SheetTitle } from '@/components/ui/sheet'
 import { Menu } from 'lucide-react'
 import { navigationItems } from '../../../lib/constant /navlinks'
-// Mock data - replace with your actual data
-const USER = { storageUsed: 250, storageLimit: 1000 }
-const calculateStoragePercentage = () => Math.round((USER.storageUsed / USER.storageLimit) * 100)
 
-export default function ResponsiveModernHeader() {
+
+type ResponsiveHeaderProp ={
+    user: {storageUsed: number, storageLimit: number}
+    percentage: number
+}
+export default function ResponsiveHeader({user, percentage}: ResponsiveHeaderProp) {
      const [showMobileMenu, setShowMobileMenu] = useState(false)
     return(
         <>
@@ -20,7 +22,6 @@ export default function ResponsiveModernHeader() {
                   <Menu className="h-5 w-5" />
                 </Button>
               </SheetTrigger>
-              
               <SheetContent 
                 side="right" 
                 className="w-[280px] sm:w-[320px] p-0 bg-white border-l border-gray-200 shadow-xl"
@@ -40,11 +41,8 @@ export default function ResponsiveModernHeader() {
                 </SheetHeader>
 
                 <div className="px-6 py-6 space-y-8">
-                  {/* Mobile Storage Info */}
-                 
                   {/* Mobile Navigation */}
                   <div className="space-y-4">
-
                     <div className="space-y-2">
                       {navigationItems.map((item) => {
                         const Icon = item.icon
@@ -77,28 +75,21 @@ export default function ResponsiveModernHeader() {
                      <div className="p-4 bg-gray-50 rounded-xl border border-gray-200">
                     <div className="flex items-center justify-between mb-3">
                       <span className="text-sm font-medium text-gray-700">Storage Usage</span>
-                      <span className="text-sm font-medium text-gray-900">{calculateStoragePercentage()}%</span>
+                      <span className="text-sm font-medium text-gray-900">{percentage}%</span>
                     </div>
                     <div className="h-2 w-full rounded-full bg-gray-200 overflow-hidden mb-2">
                       <div
                         className="h-full rounded-full bg-black transition-all duration-300"
-                        style={{ width: `${calculateStoragePercentage()}%` }}
+                        style={{ width: `${percentage}%` }}
                       ></div>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-xs text-gray-500">{USER.storageUsed} MB used</span>
-                      <span className="text-xs text-gray-500">{USER.storageLimit} MB total</span>
+                      <span className="text-xs text-gray-500">{user.storageUsed} MB used</span>
+                      <span className="text-xs text-gray-500">{user.storageLimit} MB total</span>
                     </div>
                   </div>
-
                   </div>
-
-                  {/* Mobile Quick Actions */}
-
                 </div>
-
-                {/* Mobile Footer */}
-
               </SheetContent>
             </Sheet>
           </div>

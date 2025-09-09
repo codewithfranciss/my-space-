@@ -67,7 +67,10 @@ export default function Header() {
             </div>
         </div>
         {/* Mobile Menu */}
-        <ResponsiveModernHeader />
+        <ResponsiveModernHeader
+        user= {USER}
+        percentage= {calculateStoragePercentage()}
+        />
       </div>
     </header>
   )
