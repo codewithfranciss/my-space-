@@ -2,7 +2,7 @@
 
 import type React from "react"
 import { getDaysUntilExpiration, formatDate, formatTimeAgo } from "@/lib/utils"
-import { RECENT_SPACES } from "@/lib/constant"
+import { RECENT_SPACES } from "@/lib/constant /mock_data"
 import ResponsiveModernHeader from "@/components/shared /Header"
 import { useState } from "react"
 import Link from "next/link"
