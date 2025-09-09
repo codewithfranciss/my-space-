@@ -3,6 +3,7 @@
 import type React from "react"
 import { getDaysUntilExpiration, formatDate, formatTimeAgo } from "@/lib/utils"
 import { RECENT_SPACES } from "@/lib/constant"
+import ResponsiveModernHeader from "@/components/shared /Header"
 import { useState } from "react"
 import Link from "next/link"
 import {
@@ -110,46 +111,7 @@ const setActiveTab = (tab: any) => { /* your function */ };
 
   return (
     <div className="flex min-h-screen flex-col">
-<header className="sticky top-0 z-50 w-full border-b border-gray-200/80 bg-white/95 backdrop-blur-md shadow-sm supports-[backdrop-filter]:bg-white/60">
-        <div className="mx-auto max-w-7xl flex h-16 items-center justify-between px-4 md:px-6">
-          {/* Logo */}
-          <div className="flex items-center gap-3">
-            <div className="p-2 rounded-xl bg-black text-white">
-              <Share2 className="h-5 w-5" />
-            </div>
-            <span className="text-xl font-bold text-gray-900 tracking-tight">MySpaces</span>
-          </div>
-
-          {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center gap-8">
-            <Link 
-              href="/dashboard" 
-              className="text-sm font-medium text-gray-600 hover:text-black transition-colors duration-200 relative group"
-            >
-              Dashboard
-              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-black transition-all duration-200 group-hover:w-full"></span>
-            </Link>
-            <Link 
-              href="/spaces" 
-              className="text-sm font-medium text-black transition-colors duration-200 relative group"
-            >
-              My Spaces
-              <span className="absolute -bottom-1 left-0 w-full h-0.5 bg-black"></span>
-            </Link>
-            <Link 
-              href="/settings" 
-              className="text-sm font-medium text-gray-600 hover:text-black transition-colors duration-200 relative group"
-            >
-              Settings
-              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-black transition-all duration-200 group-hover:w-full"></span>
-            </Link>
-          </nav>
-
-          {/* Storage & Upgrade Section */}
-
-        </div>
-      </header>
-
+     <ResponsiveModernHeader />
       <main className="flex-1 container py-12 mx-auto">
         <div className="max-w-4xl mx-auto">
           <Tabs defaultValue="recent" className="max-w-5xl">
