@@ -3,6 +3,10 @@ import { useState } from 'react'
 import Link from 'next/link'
 import { Sheet, SheetContent, SheetTrigger, SheetClose, SheetHeader, SheetTitle } from '@/components/ui/sheet'
 import { Menu } from 'lucide-react'
+import { navigationItems } from '../../../lib/constant /navlinks'
+// Mock data - replace with your actual data
+const USER = { storageUsed: 250, storageLimit: 1000 }
+const calculateStoragePercentage = () => Math.round((USER.storageUsed / USER.storageLimit) * 100)
 
 export default function ResponsiveModernHeader() {
      const [showMobileMenu, setShowMobileMenu] = useState(false)

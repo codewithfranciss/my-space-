@@ -1,17 +1,16 @@
 "use client"
 import Link from 'next/link'
-import { Share2, Settings as SettingsIcon, BarChart3, Layers } from 'lucide-react'
-// Mock data - replace with your actual data
+import { navigationItems } from '../../lib/constant /navlinks';
+import { Share2 } from 'lucide-react';
+import ResponsiveModernHeader from './header/mobile';
+
 const USER = { storageUsed: 250, storageLimit: 1000 }
 const calculateStoragePercentage = () => Math.round((USER.storageUsed / USER.storageLimit) * 100)
 
-export default function ResponsiveModernHeader() {
-  
-
+export default function Header() {
   return (
     <header className="sticky top-0 z-50 w-full border-b border-gray-200/80 bg-white/95 backdrop-blur-md shadow-sm supports-[backdrop-filter]:bg-white/60">
       <div className="mx-auto max-w-7xl flex h-16 items-center justify-between px-4 sm:px-6">
-        
         {/* Logo Section */}
         <div className="flex items-center gap-2 sm:gap-3 min-w-0">
           <div className="p-1.5 sm:p-2 rounded-lg sm:rounded-xl bg-black text-white flex-shrink-0">
@@ -67,6 +66,8 @@ export default function ResponsiveModernHeader() {
               </div>
             </div>
         </div>
+        {/* Mobile Menu */}
+        <ResponsiveModernHeader />
       </div>
     </header>
   )
