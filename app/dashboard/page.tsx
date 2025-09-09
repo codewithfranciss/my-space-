@@ -146,27 +146,7 @@ const setActiveTab = (tab: any) => { /* your function */ };
           </nav>
 
           {/* Storage & Upgrade Section */}
-          <div className="flex items-center gap-4">
-            {/* Storage Card */}
-            <div className="hidden lg:flex items-center gap-3 px-4 py-2 transition-colors">
-              <div className="flex flex-col min-w-[140px]">
-                <div className="flex items-center justify-between mb-1">
-                  <span className="text-xs font-medium text-gray-600">Free Plan</span>
-                  <span className="text-xs text-gray-500">{calculateStoragePercentage()}%</span>
-                </div>
-                <div className="h-1.5 w-full rounded-full bg-gray-200 overflow-hidden">
-                  <div
-                    className="h-full rounded-full bg-black transition-all duration-300"
-                    style={{ width: `${calculateStoragePercentage()}%` }}
-                  ></div>
-                </div>
-                <div className="flex justify-between mt-1">
-                  <span className="text-xs text-gray-500">{USER.storageUsed} MB</span>
-                  <span className="text-xs text-gray-500">{USER.storageLimit} MB</span>
-                </div>
-              </div>
-            </div>
-          </div>
+
         </div>
       </header>
 
