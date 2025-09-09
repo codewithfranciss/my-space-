@@ -1,23 +1,12 @@
 "use client"
-
-import { useState } from 'react'
 import Link from 'next/link'
-import { Share2, Menu, X, User, Bell, Settings as SettingsIcon, BarChart3, Layers } from 'lucide-react'
-import { Button } from '@/components/ui/button'
-import { Sheet, SheetContent, SheetTrigger, SheetClose, SheetHeader, SheetTitle } from '@/components/ui/sheet'
-
+import { Share2, Settings as SettingsIcon, BarChart3, Layers } from 'lucide-react'
 // Mock data - replace with your actual data
 const USER = { storageUsed: 250, storageLimit: 1000 }
 const calculateStoragePercentage = () => Math.round((USER.storageUsed / USER.storageLimit) * 100)
 
 export default function ResponsiveModernHeader() {
-  const [showMobileMenu, setShowMobileMenu] = useState(false)
-
-  const navigationItems = [
-    { href: '/dashboard', label: 'Dashboard', icon: BarChart3, isActive: false },
-    { href: '/spaces', label: 'My Spaces', icon: Layers, isActive: true },
-    { href: '/settings', label: 'Settings', icon: SettingsIcon, isActive: false }
-  ]
+  
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-gray-200/80 bg-white/95 backdrop-blur-md shadow-sm supports-[backdrop-filter]:bg-white/60">
