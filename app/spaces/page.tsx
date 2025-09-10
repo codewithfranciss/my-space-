@@ -97,8 +97,7 @@ export default function SpacesPage() {
 
   return (
     <div className="flex min-h-screen flex-col">
-    
-
+      <Header />
       <main className="flex-1 container py-4 sm:py-8 px-4 sm:px-6 mx-auto">
         <div className="max-w-5xl mx-auto">
 
