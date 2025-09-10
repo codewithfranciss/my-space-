@@ -4,9 +4,9 @@ import { useState } from "react"
 import Link from "next/link"
 import Header from "@/components/shared /Header"
 import { MOCK_SPACES } from "@/lib/constant /mock_data"
+import { formatDate, formatTimeAgo } from "@/lib/utils"
 import { useRouter } from "next/navigation"
 import {
-  Share2,
   Plus,
   Search,
   MoreVertical,
@@ -16,11 +16,6 @@ import {
   Clock,
   Lock,
   Globe,
-  Layers,
-  User,
-  Home,
-  LayoutDashboard,
-  Menu,
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -34,74 +29,30 @@ import {
   DialogFooter,
   DialogClose,
 } from "@/components/ui/dialog"
-import {
-  Sheet,
-  SheetContent,
-  SheetDescription,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-  SheetClose,
-} from "@/components/ui/sheet"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 
-
-
-
 export default function SpacesPage() {
   const router = useRouter()
-
   const [spaces, setSpaces] = useState(MOCK_SPACES)
   const [searchQuery, setSearchQuery] = useState("")
   const [showDeleteDialog, setShowDeleteDialog] = useState(false)
   const [spaceToDelete, setSpaceToDelete] = useState<string | null>(null)
-  const [showMobileMenu, setShowMobileMenu] = useState(false)
-
   const filteredSpaces = spaces.filter((space) => space.name.toLowerCase().includes(searchQuery.toLowerCase()))
 
   const handleDeleteSpace = () => {
     if (!spaceToDelete) return
-
     // In a real app, this would make an API call to delete the space
     setSpaces(spaces.filter((space) => space.id !== spaceToDelete))
     setSpaceToDelete(null)
     setShowDeleteDialog(false)
-
-
   }
-
-  const formatDate = (dateString: string) => {
-    const date = new Date(dateString)
-    return date.toLocaleDateString()
-  }
-
-  const formatTimeAgo = (dateString: string) => {
-    const date = new Date(dateString)
-    const now = new Date()
-    const diffInSeconds = Math.floor((now.getTime() - date.getTime()) / 1000)
-
-    if (diffInSeconds < 60) {
-      return "just now"
-    } else if (diffInSeconds < 3600) {
-      const minutes = Math.floor(diffInSeconds / 60)
-      return `${minutes} minute${minutes > 1 ? "s" : ""} ago`
-    } else if (diffInSeconds < 86400) {
-      const hours = Math.floor(diffInSeconds / 3600)
-      return `${hours} hour${hours > 1 ? "s" : ""} ago`
-    } else {
-      const days = Math.floor(diffInSeconds / 86400)
-      return `${days} day${days > 1 ? "s" : ""} ago`
-    }
-  }
-
+  
   return (
     <div className="flex min-h-screen flex-col">
       <Header />
       <main className="flex-1 container py-4 sm:py-8 px-4 sm:px-6 mx-auto">
         <div className="max-w-5xl mx-auto">
-
-
           <div className="mb-4 sm:mb-6">
             <div className="relative">
               <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
