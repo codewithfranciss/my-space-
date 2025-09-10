@@ -3,7 +3,7 @@
 import type React from "react"
 import { getDaysUntilExpiration, formatDate, formatTimeAgo } from "@/lib/utils"
 import { RECENT_SPACES } from "@/lib/constant /mock_data"
-import ResponsiveModernHeader from "@/components/shared /Header"
+import Header from "@/components/shared /Header"
 import { useState } from "react"
 import Link from "next/link"
 import {
@@ -111,7 +111,7 @@ const setActiveTab = (tab: any) => { /* your function */ };
 
   return (
     <div className="flex min-h-screen flex-col">
-     <ResponsiveModernHeader />
+     <Header />
       <main className="flex-1 container py-12 mx-auto">
         <div className="max-w-4xl mx-auto">
           <Tabs defaultValue="recent" className="max-w-5xl">
