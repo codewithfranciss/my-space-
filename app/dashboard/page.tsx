@@ -56,9 +56,6 @@ export default function Dashboard() {
   const [searchQuery, setSearchQuery] = useState("")
   const [showDeleteDialog, setShowDeleteDialog] = useState(false)
   const [spaceToDelete, setSpaceToDelete] = useState<string | null>(null)
-   const USER = { storageUsed: 250, storageLimit: 1000 };
- const calculateStoragePercentage = () => Math.round((USER.storageUsed / USER.storageLimit) * 100);
-const setActiveTab = (tab: any) => { /* your function */ };
 
   const filteredSpaces = RECENT_SPACES.filter((space) => space.name.toLowerCase().includes(searchQuery.toLowerCase()))
 
