@@ -20,3 +20,28 @@ export async function GET(req: Request) {
     return NextResponse.json(data);
 
 }
+
+export async function POST(req: Request) {
+    const body = await req.json();
+    const { name, is_private, shortId, pin, expiration_type, expiration_value, expires_at, user_id } = body;
+    
+    if (!user_id) {
+        return NextResponse.json({ error: "User Id is required" }, { status: 400 });
+    }
+
+    const { data, error } = await supabase.from("spaces").insert([{
+        name,
+        is_private,
+        shortId,
+        pin,
+        expiration_type,
+        expiration_value,
+        expires_at,
+        user_id
+    }]).select().single();
+    
+    if (error) {
+        return NextResponse.json({ error: error.message }, { status: 500 });
+    }
+
+}
