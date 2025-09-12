@@ -3,11 +3,12 @@
 import type React from "react"
 import { getDaysUntilExpiration, formatDate, formatTimeAgo } from "@/lib/utils"
 import { RECENT_SPACES } from "@/lib/constant /mock_data"
+import { supabase } from "@/lib/supabaseClient"
+import { useRouter } from "next/navigation"
 import Header from "@/components/shared /Header"
 import { useState } from "react"
 import Link from "next/link"
 import {
-  Share2,
   QrCode,
   Copy,
   ArrowRight,
@@ -45,6 +46,7 @@ import { Badge } from "@/components/ui/badge"
 
 export default function Dashboard() {
  
+  const router = useRouter()
   const [step, setStep] = useState(1)
   const [spaceName, setSpaceName] = useState("")
   const [isPrivate, setIsPrivate] = useState(false)
@@ -59,9 +61,17 @@ export default function Dashboard() {
 
   const filteredSpaces = RECENT_SPACES.filter((space) => space.name.toLowerCase().includes(searchQuery.toLowerCase()))
 
-  const handleCreateSpace = (e: React.FormEvent) => {
+  const handleCreateSpace = async(e: React.FormEvent) => {
     e.preventDefault()
+    const { data: { user } } = await supabase.auth.getUser()
+  
+    if (!user) {
+      router.push("/auth/signin")
+      return
+    }
 
+   const userId = user.id
+   
     // Validate form
     if (!spaceName.trim()) {
 
@@ -76,7 +86,33 @@ export default function Dashboard() {
     // Generate a random space ID (in a real app, this would come from the backend)
     const randomId = Math.random().toString(36).substring(2, 10)
     setCreatedSpaceId(randomId)
-    setShowQrCode(true)
+
+    const res = await fetch("/api/spaces", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        name: spaceName,
+        is_private: isPrivate,
+        pin: isPrivate ? pin : null,
+        expiration_type: expirationType,
+        expiration_value: expirationValue,
+        short_id: randomId,
+        expires_at: null, // Handle custom expiration date if needed
+        user_id: userId,
+      }),
+    })
+
+    if (res.ok) {
+      // Successfully created space
+      setShowQrCode(true)
+    } else {
+      // Handle error
+      const errorData = await res.json()
+      console.error("Error creating space:", errorData.error)
+    }
+    
   }
 
   const handleCopyLink = () => {
