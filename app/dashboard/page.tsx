@@ -41,6 +41,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter }
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { Badge } from "@/components/ui/badge"
+import { Loader2 } from "lucide-react"
 
 
 
@@ -58,40 +59,33 @@ export default function Dashboard() {
   const [searchQuery, setSearchQuery] = useState("")
   const [showDeleteDialog, setShowDeleteDialog] = useState(false)
   const [spaceToDelete, setSpaceToDelete] = useState<string | null>(null)
+  const [loading, setLoading] = useState(false)
 
   const filteredSpaces = RECENT_SPACES.filter((space) => space.name.toLowerCase().includes(searchQuery.toLowerCase()))
 
-  const handleCreateSpace = async(e: React.FormEvent) => {
-    e.preventDefault()
+const handleCreateSpace = async (e: React.FormEvent) => {
+  e.preventDefault()
+  if (loading) return // ✅ prevent duplicate clicks
+  setLoading(true)
+
+  try {
     const { data: { user } } = await supabase.auth.getUser()
-  
     if (!user) {
       router.push("/auth/signin")
       return
     }
 
-   const userId = user.id
-   
-    // Validate form
-    if (!spaceName.trim()) {
+    const userId = user.id
 
-      return
-    }
+    if (!spaceName.trim()) return
+    if (isPrivate && (!pin || pin.length < 4)) return
 
-    if (isPrivate && (!pin || pin.length < 4)) {
-
-      return
-    }
-
-    // Generate a random space ID (in a real app, this would come from the backend)
     const randomId = Math.random().toString(36).substring(2, 10)
     setCreatedSpaceId(randomId)
 
     const res = await fetch("/api/spaces", {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         name: spaceName,
         is_private: isPrivate,
@@ -99,21 +93,21 @@ export default function Dashboard() {
         expiration_type: expirationType,
         expiration_value: expirationValue,
         short_id: randomId,
-        expires_at: null, // Handle custom expiration date if needed
+        expires_at: null,
         user_id: userId,
       }),
     })
 
     if (res.ok) {
-      // Successfully created space
       setShowQrCode(true)
     } else {
-      // Handle error
-      const errorData = await res.json()
-      console.error("Error creating space:", errorData.error)
+      const errorData = await res.json().catch(() => null)
+      console.error("Error creating space:", errorData?.error || "Unknown error")
     }
-    
+  } finally {
+    setLoading(false) // ✅ always reset
   }
+}
 
   const handleCopyLink = () => {
     navigator.clipboard.writeText(`https://myspaceis.com/space/${createdSpaceId}`)
@@ -279,7 +273,9 @@ export default function Dashboard() {
                             <Button type="button" variant="outline" className="flex-1" onClick={() => setStep(1)}>
                               Back
                             </Button>
-                            <Button type="submit" className="flex-1 bg-black hover:bg-gray-900 text-white">
+                            <Button type="submit" className="flex-1 bg-black hover:bg-gray-900 text-white" disabled={loading}>
+                              {loading ? <Loader2 className="animate-spin h-4 w-4 mr-2" /> : null}
+
                               Create Space
                             </Button>
                           </div>
