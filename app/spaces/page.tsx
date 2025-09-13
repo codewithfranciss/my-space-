@@ -1,9 +1,7 @@
 "use client"
-
 import { useState, useEffect, use } from "react"
 import Link from "next/link"
 import Header from "@/components/shared /Header"
-import { MOCK_SPACES } from "@/lib/constant /mock_data"
 import { formatDate, formatTimeAgo } from "@/lib/utils"
 import { useRouter } from "next/navigation"
 import {
@@ -20,15 +18,7 @@ import {
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogFooter,
-  DialogClose,
-} from "@/components/ui/dialog"
+import DeleteSpaceDialog from "@/components/DeleteSpaceDialog"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { supabase } from '../../lib/supabaseClient';
@@ -68,13 +58,9 @@ export default function SpacesPage() {
   }, [router])
 
 
-  const handleDeleteSpace = () => {
-    if (!spaceToDelete) return
-    // In a real app, this would make an API call to delete the space
-    setSpaces(spaces.filter((space) => space.id !== spaceToDelete))
-    setSpaceToDelete(null)
-    setShowDeleteDialog(false)
-  }
+const handleDeleted = (id: string) => {
+  setSpaces(spaces.filter((s) => s.id !== id))
+}
   
   return (
     <div className="flex min-h-screen flex-col">
@@ -405,27 +391,15 @@ export default function SpacesPage() {
       </footer>
 
       {/* Delete Space Dialog */}
-      <Dialog open={showDeleteDialog} onOpenChange={setShowDeleteDialog}>
-        <DialogContent className="sm:max-w-md">
-          <DialogHeader>
-            <DialogTitle>Delete Space</DialogTitle>
-            <DialogDescription>
-              Are you sure you want to delete this space? This action cannot be undone and all content will be
-              permanently lost.
-            </DialogDescription>
-          </DialogHeader>
-          <DialogFooter className="flex-col sm:flex-row gap-2">
-            <DialogClose asChild>
-              <Button variant="outline" className="sm:flex-1">
-                Cancel
-              </Button>
-            </DialogClose>
-            <Button variant="destructive" onClick={handleDeleteSpace} className="sm:flex-1">
-              Delete Space
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
+       <DeleteSpaceDialog
+      spaceId={spaceToDelete}
+      open={showDeleteDialog}
+      onClose={() => {
+        setShowDeleteDialog(false)
+        setSpaceToDelete(null)
+      }}
+      onDeleted={handleDeleted}
+    />
     </div>
   )
 }

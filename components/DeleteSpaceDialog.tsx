@@ -18,12 +18,12 @@ export default function DeleteSpaceDialog({ spaceId, open, onClose, onDeleted }:
     if (!spaceId) return
     setLoading(true)
     try {
-      const res = await fetch(`/api/spaces/${spaceId}`, { method: "DELETE" })
+      const res = await fetch(`/api/spaces/?spaceId=${spaceId}`, { method: "DELETE" })
       if (!res.ok) {
         const err = await res.json().catch(() => ({}))
         throw new Error(err.error || "Failed to delete space")
       }
-      onDeleted(spaceId) // ✅ update parent
+      onDeleted(spaceId) 
       onClose()
     } catch (err) {
       console.error("Error deleting space:", err)

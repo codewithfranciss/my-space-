@@ -141,11 +141,8 @@ const handleCreateSpace = async (e: React.FormEvent) => {
      <Header />
       <main className="flex-1 container py-12 mx-auto">
         <div className="max-w-4xl mx-auto">
-          <Tabs defaultValue="recent" className="max-w-5xl">
-            <TabsList className="grid mx-auto w-full grid-cols-2 mb-4 sm:mb-8">
-              <TabsTrigger value="create">Create Space</TabsTrigger>
-              <TabsTrigger value="recent">Recent Spaces</TabsTrigger>
-            </TabsList>
+          <Tabs defaultValue="create" className="max-w-5xl">
+          
 
             <TabsContent value="create">
               <Card>
@@ -344,142 +341,7 @@ const handleCreateSpace = async (e: React.FormEvent) => {
               </Card>
             </TabsContent>
 
-            <TabsContent value="recent">
-              <Card>
-                <CardHeader className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-                  <div>
-                    <CardTitle>Recent Spaces</CardTitle>
-                    <CardDescription>View and manage your recently created spaces.</CardDescription>
-                  </div>
-                  <div className="w-full sm:w-auto">
-                    <div className="relative">
-                      <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-                      <Input
-                        placeholder="Search spaces..."
-                        className="pl-10 w-full sm:w-[200px]"
-                        value={searchQuery}
-                        onChange={(e) => setSearchQuery(e.target.value)}
-                      />
-                    </div>
-                  </div>
-                </CardHeader>
-                <CardContent>
-                  {filteredSpaces.length > 0 ? (
-                    <div className="space-y-4">
-                      {filteredSpaces.map((space) => (
-                        <Card key={space.id} className="overflow-hidden">
-                          <CardHeader className="pb-2">
-                            <div className="flex justify-between items-start">
-                              <div>
-                                <div className="flex items-center gap-2">
-                                  <CardTitle className="text-lg">{space.name}</CardTitle>
-                                  <Badge variant={space.isPrivate ? "outline" : "secondary"} className="ml-2">
-                                    {space.isPrivate ? (
-                                      <span className="flex items-center gap-1">
-                                        <Lock className="h-3 w-3" /> Private
-                                      </span>
-                                    ) : (
-                                      <span className="flex items-center gap-1">
-                                        <Globe className="h-3 w-3" /> Public
-                                      </span>
-                                    )}
-                                  </Badge>
-                                </div>
-                                <CardDescription className="flex items-center gap-1 mt-1">
-                                  <Clock className="h-3 w-3" />
-                                  <span>
-                                    Expires in {getDaysUntilExpiration(space.expiresAt)} days
-                                    {getDaysUntilExpiration(space.expiresAt) <= 3 && (
-                                      <Badge variant="destructive" className="ml-2 text-xs">
-                                        Expiring soon
-                                      </Badge>
-                                    )}
-                                  </span>
-                                </CardDescription>
-                              </div>
-                              <DropdownMenu>
-                                <DropdownMenuTrigger asChild>
-                                  <Button variant="ghost" size="icon" className="h-8 w-8">
-                                    <MoreVertical className="h-4 w-4" />
-                                  </Button>
-                                </DropdownMenuTrigger>
-                                <DropdownMenuContent align="end">
-                                  <DropdownMenuItem asChild>
-                                    <Link href={`/space/${space.id}`} className="cursor-pointer">
-                                      <ExternalLink className="mr-2 h-4 w-4" />
-                                      Open Space
-                                    </Link>
-                                  </DropdownMenuItem>
-                                  <DropdownMenuItem asChild>
-                                    <Link href={`/space/${space.id}/settings`} className="cursor-pointer">
-                                      <Settings className="mr-2 h-4 w-4" />
-                                      Space Settings
-                                    </Link>
-                                  </DropdownMenuItem>
-                                  <DropdownMenuItem
-                                    className="text-red-600 focus:text-red-600"
-                                    onClick={() => {
-                                      setSpaceToDelete(space.id)
-                                      setShowDeleteDialog(true)
-                                    }}
-                                  >
-                                    <Trash2 className="mr-2 h-4 w-4" />
-                                    Delete Space
-                                  </DropdownMenuItem>
-                                </DropdownMenuContent>
-                              </DropdownMenu>
-                            </div>
-                          </CardHeader>
-                          <CardContent className="pb-2">
-                            <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2 sm:gap-0">
-                              <div className="text-xs sm:text-sm text-muted-foreground">
-                                <div>Created {formatDate(space.createdAt)}</div>
-                                <div>Last activity {formatTimeAgo(space.lastActivity)}</div>
-                              </div>
-                              <div className="flex gap-3 text-xs sm:text-sm">
-                                <div className="flex flex-col items-center">
-                                  <span className="font-bold">{space.messageCount}</span>
-                                  <span className="text-muted-foreground">Messages</span>
-                                </div>
-                                <div className="flex flex-col items-center">
-                                  <span className="font-bold">{space.fileCount}</span>
-                                  <span className="text-muted-foreground">Files</span>
-                                </div>
-                              </div>
-                            </div>
-                          </CardContent>
-                          <CardFooter className="pt-2">
-                            <Button className="w-full bg-black hover:bg-gray-900 text-white" asChild>
-                              <Link href={`/space/${space.id}`}>Enter Space</Link>
-                            </Button>
-                          </CardFooter>
-                        </Card>
-                      ))}
-                    </div>
-                  ) : (
-                    <div className="text-center py-8">
-                      <p className="text-muted-foreground">
-                        {searchQuery ? `No spaces matching "${searchQuery}"` : "You haven't created any spaces yet."}
-                      </p>
-                      {!searchQuery && (
-                        <Button
-                          className="mt-4 bg-black hover:bg-gray-900 text-white"
-                          onClick={() => {
-                            const tabsList = document.querySelector('[role="tablist"]')
-                            const createTab = tabsList?.querySelector('[value="create"]')
-                            if (createTab instanceof HTMLElement) {
-                              createTab.click()
-                            }
-                          }}
-                        >
-                          Create Your First Space
-                        </Button>
-                      )}
-                    </div>
-                  )}
-                </CardContent>
-              </Card>
-            </TabsContent>
+            
           </Tabs>
         </div>
       </main>
