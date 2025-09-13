@@ -1,5 +1,4 @@
 "use client"
-
 import type React from "react"
 import { supabase } from "@/lib/supabaseClient"
 import { useState } from "react"
@@ -12,22 +11,16 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 export default function SignInPage() {
  const [loadingProvider, setLoadingProvider] = useState<string | null>(null)
 
-  //   const handleSubmit = async (e: React.FormEvent) => {
-  //   e.preventDefault()
-
-  // }
-
 const handleSocialLogin = async (provider: "google" | "github") => {
   setLoadingProvider(provider)
   const { data, error } = await supabase.auth.signInWithOAuth({
     provider,
     options: { redirectTo: "http://localhost:3000/auth/callback" },
   })
+  if (data) console.log(data)
   if (error) console.error(error.message)
   setLoadingProvider(null)
 }
-
-  
 
   return (
     <div className="min-h-screen flex flex-col bg-white">
@@ -100,92 +93,6 @@ const handleSocialLogin = async (provider: "google" | "github") => {
               Continue with GitHub
                 </Button>
               </div>
-
-              {/* Divider */}
-              {/* <div className="relative">
-                <div className="absolute inset-0 flex items-center">
-                  <Separator className="w-full" />
-                </div>
-                <div className="relative flex justify-center text-xs uppercase">
-                  <span className="bg-white px-2 text-muted-foreground">Or continue with email</span>
-                </div>
-              </div> */}
-
-              {/* Email/Password Form */}
-              {/* <form onSubmit={handleSubmit} className="space-y-4">
-                <div className="space-y-2">
-                  <Label htmlFor="email">Email address</Label>
-                  <div className="relative">
-                    <Mail className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-                    <Input
-                      id="email"
-                      name="email"
-                      type="email"
-                      placeholder="Enter your email"
-                      value={formData.email}
-                      onChange={handleInputChange}
-                      className="pl-10 h-11"
-                      required
-                    />
-                  </div>
-                </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="password">Password</Label>
-                  <div className="relative">
-                    <Lock className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-                    <Input
-                      id="password"
-                      name="password"
-                      type={showPassword ? "text" : "password"}
-                      placeholder="Enter your password"
-                      value={formData.password}
-                      onChange={handleInputChange}
-                      className="pl-10 pr-10 h-11"
-                      required
-                    />
-                    <button
-                      type="button"
-                      onClick={() => setShowPassword(!showPassword)}
-                      className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
-                    >
-                      {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
-                    </button>
-                  </div>
-                </div>
-
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center space-x-2">
-                    <input
-                      id="remember"
-                      type="checkbox"
-                      className="h-4 w-4 rounded border-gray-300 text-black focus:ring-black"
-                    />
-                    <Label htmlFor="remember" className="text-sm font-normal">
-                      Remember me
-                    </Label>
-                  </div>
-                  <Link href="/auth/forgot-password" className="text-sm text-black hover:underline">
-                    Forgot password?
-                  </Link>
-                </div>
-
-                <Button
-                  type="submit"
-                  className="w-full h-11 bg-black hover:bg-gray-900 text-white"
-                  disabled={isLoading}
-                >
-                  {isLoading ? "Signing in..." : "Sign in"}
-                </Button> 
-              </form> */}
-
-              {/* Footer */}
-              {/* <div className="text-center text-sm text-muted-foreground">
-                Don't have an account?{" "}
-                <Link href="/auth/signup" className="text-black hover:underline font-medium">
-                  Sign up for free
-                </Link>
-              </div> */}
             </CardContent>
           </Card>
 

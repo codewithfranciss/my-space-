@@ -1,13 +1,10 @@
 "use client"
 
 import type React from "react"
-import { getDaysUntilExpiration, formatDate, formatTimeAgo } from "@/lib/utils"
-import { RECENT_SPACES } from "@/lib/constant /mock_data"
 import { supabase } from "@/lib/supabaseClient"
 import { useRouter } from "next/navigation"
 import Header from "@/components/shared /Header"
 import { useState } from "react"
-import Link from "next/link"
 import {
   QrCode,
   Copy,
@@ -16,11 +13,6 @@ import {
   Lock,
   Globe,
   X,
-  Search,
-  MoreVertical,
-  ExternalLink,
-  Settings,
-  Trash2,
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -28,22 +20,9 @@ import { Label } from "@/components/ui/label"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Switch } from "@/components/ui/switch"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogFooter,
-  DialogClose,
-} from "@/components/ui/dialog"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
-import { Badge } from "@/components/ui/badge"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Tabs, TabsContent} from "@/components/ui/tabs"
 import { Loader2 } from "lucide-react"
-
-
 
 export default function Dashboard() {
  
@@ -56,16 +35,12 @@ export default function Dashboard() {
   const [expirationValue, setExpirationValue] = useState("24")
   const [showQrCode, setShowQrCode] = useState(false)
   const [createdSpaceId, setCreatedSpaceId] = useState("")
-  const [searchQuery, setSearchQuery] = useState("")
-  const [showDeleteDialog, setShowDeleteDialog] = useState(false)
-  const [spaceToDelete, setSpaceToDelete] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
 
-  const filteredSpaces = RECENT_SPACES.filter((space) => space.name.toLowerCase().includes(searchQuery.toLowerCase()))
 
 const handleCreateSpace = async (e: React.FormEvent) => {
   e.preventDefault()
-  if (loading) return // ✅ prevent duplicate clicks
+  if (loading) return 
   setLoading(true)
 
   try {
@@ -105,10 +80,9 @@ const handleCreateSpace = async (e: React.FormEvent) => {
       console.error("Error creating space:", errorData?.error || "Unknown error")
     }
   } finally {
-    setLoading(false) // ✅ always reset
+    setLoading(false)
   }
 }
-
   const handleCopyLink = () => {
     navigator.clipboard.writeText(`https://myspaceis.com/space/${createdSpaceId}`)
 
@@ -124,18 +98,6 @@ const handleCreateSpace = async (e: React.FormEvent) => {
     setCreatedSpaceId("")
     setStep(1)
   }
-
-  const handleDeleteSpace = () => {
-    if (!spaceToDelete) return
-
-  
-
-    setSpaceToDelete(null)
-    setShowDeleteDialog(false)
-  }
-
-
-
   return (
     <div className="flex min-h-screen flex-col">
      <Header />
@@ -352,28 +314,6 @@ const handleCreateSpace = async (e: React.FormEvent) => {
         </div>
       </footer>
 
-      {/* Delete Space Dialog */}
-      <Dialog open={showDeleteDialog} onOpenChange={setShowDeleteDialog}>
-        <DialogContent className="sm:max-w-md">
-          <DialogHeader>
-            <DialogTitle>Delete Space</DialogTitle>
-            <DialogDescription>
-              Are you sure you want to delete this space? This action cannot be undone and all content will be
-              permanently lost.
-            </DialogDescription>
-          </DialogHeader>
-          <DialogFooter className="flex-col sm:flex-row gap-2">
-            <DialogClose asChild>
-              <Button variant="outline" className="sm:flex-1">
-                Cancel
-              </Button>
-            </DialogClose>
-            <Button variant="destructive" onClick={handleDeleteSpace} className="sm:flex-1">
-              Delete Space
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
     </div>
   )
 }
