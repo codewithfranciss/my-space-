@@ -4,39 +4,30 @@ import type React from "react"
 import { supabase } from "@/lib/supabaseClient"
 import { useState } from "react"
 import Link from "next/link"
-import { useRouter } from "next/navigation"
 import { Share2, Github } from "lucide-react"
 import { Button } from "@/components/ui/button"
-
+import { Loader2 } from "lucide-react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 
 export default function SignInPage() {
-const router= useRouter();
-  const [isLoading, setIsLoading] = useState(false)
-  const [formData, setFormData] = useState({
-    email: "",
-    password: "",})
+ const [loadingProvider, setLoadingProvider] = useState<string | null>(null)
 
   //   const handleSubmit = async (e: React.FormEvent) => {
   //   e.preventDefault()
 
   // }
 
-  const handleSocialLogin = async (provider: string) => {
-     const {data, error} = await supabase.auth.signInWithOAuth({
-      provider: provider as 'google' | 'github',
-      options:{
-        redirectTo: 'http://localhost:3000/auth/callback'
-      }
-    })
-  }
+const handleSocialLogin = async (provider: "google" | "github") => {
+  setLoadingProvider(provider)
+  const { data, error } = await supabase.auth.signInWithOAuth({
+    provider,
+    options: { redirectTo: "http://localhost:3000/auth/callback" },
+  })
+  if (error) console.error(error.message)
+  setLoadingProvider(null)
+}
 
-    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    })
-  }
+  
 
   return (
     <div className="min-h-screen flex flex-col bg-white">
@@ -67,9 +58,12 @@ const router= useRouter();
                 <Button
                   variant="outline"
                   className="w-full h-11 text-sm font-medium"
-                  onClick={() => handleSocialLogin("Google")}
-                  disabled={isLoading}
+                  onClick={() => handleSocialLogin("google")}
+                   disabled={loadingProvider !== null}
                 >
+                   {loadingProvider === "google" ? (
+    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+  ) : (
                   <svg className="mr-2 h-4 w-4" viewBox="0 0 24 24">
                     <path
                       fill="currentColor"
@@ -88,16 +82,22 @@ const router= useRouter();
                       d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
                     />
                   </svg>
+                  )}
+
                   Continue with Google
                 </Button>
                 <Button
                   variant="outline"
                   className="w-full h-11 text-sm font-medium"
-                  onClick={() => handleSocialLogin("GitHub")}
-                  disabled={isLoading}
+                  onClick={() => handleSocialLogin("github")}
+                  disabled={loadingProvider !== null}
                 >
-                  <Github className="mr-2 h-4 w-4" />
-                  Continue with GitHub
+                   {loadingProvider === "github" ? (
+            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              ) : (
+            <Github className="mr-2 h-4 w-4" />
+  )}
+              Continue with GitHub
                 </Button>
               </div>
 
