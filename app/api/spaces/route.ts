@@ -48,3 +48,20 @@ export async function POST(req: Request) {
 
 
 }
+
+export async function DELETE(req: Request) {
+    const {searchParams} = new URL(req.url);
+    const spaceId = searchParams.get("spaceId");
+
+    if (!spaceId) {
+        return NextResponse.json({ error: "Missing spaceId parameter" }, { status: 400 });
+    }
+
+    const { data, error } = await supabase.from("spaces").delete().eq("id", spaceId).select().single();
+
+    if (error) {
+        return NextResponse.json({ error: error.message }, { status: 500 });
+    }
+
+    return NextResponse.json(data);
+}
