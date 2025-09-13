@@ -15,7 +15,7 @@ const handleSocialLogin = async (provider: "google" | "github") => {
   setLoadingProvider(provider)
   const { data, error } = await supabase.auth.signInWithOAuth({
     provider,
-    options: { redirectTo: "http://localhost:3000/auth/callback" },
+    options: { redirectTo: "https://myspaces.vercel.app/auth/callback" },
   })
   if (data) console.log(data)
   if (error) console.error(error.message)
