@@ -35,7 +35,7 @@ import { supabase } from '../../lib/supabaseClient';
 
 export default function SpacesPage() {
   const router = useRouter()
-  const [spaces, setSpaces] = useState(MOCK_SPACES)
+  const [spaces, setSpaces] = useState<any[]>([]) 
   const [searchQuery, setSearchQuery] = useState("")
   const [showDeleteDialog, setShowDeleteDialog] = useState(false)
   const [spaceToDelete, setSpaceToDelete] = useState<string | null>(null)
@@ -110,7 +110,7 @@ export default function SpacesPage() {
                           <div>
                             <CardTitle className="text-lg sm:text-xl truncate">{space.name}</CardTitle>
                             <CardDescription className="flex items-center gap-1 mt-1 flex-wrap">
-                              {space.isPrivate ? (
+                              {space.is_private ? (
                                 <>
                                   <Lock className="h-3 w-3" /> <span className="hidden xs:inline">Private</span>
                                 </>
@@ -121,7 +121,7 @@ export default function SpacesPage() {
                               )}
                               <span className="mx-1 hidden xs:inline">•</span>
                               <Clock className="h-3 w-3" /> <span className="hidden xs:inline">Expires</span>{" "}
-                              {formatDate(space.expiresAt)}
+                              {formatDate(space.expires_at)}
                             </CardDescription>
                           </div>
                           <DropdownMenu>
@@ -165,11 +165,11 @@ export default function SpacesPage() {
                           </div>
                           <div className="flex gap-3 text-xs sm:text-sm">
                             <div className="flex flex-col items-center">
-                              <span className="font-bold">{space.messageCount}</span>
+                              <span className="font-bold">{space.messageCount ?? 0}</span>
                               <span className="text-muted-foreground">Messages</span>
                             </div>
                             <div className="flex flex-col items-center">
-                              <span className="font-bold">{space.fileCount}</span>
+                              <span className="font-bold">{space.fileCount ?? 0} </span>
                               <span className="text-muted-foreground">Files</span>
                             </div>
                           </div>
@@ -202,10 +202,10 @@ export default function SpacesPage() {
             </TabsContent>
 
             <TabsContent value="private">
-              {filteredSpaces.filter((space) => space.isPrivate).length > 0 ? (
+              {filteredSpaces.filter((space) => space.is_private).length > 0 ? (
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   {filteredSpaces
-                    .filter((space) => space.isPrivate)
+                    .filter((space) => space.is_private)
                     .map((space) => (
                       <Card key={space.id} className="overflow-hidden">
                         <CardHeader className="pb-2 sm:pb-3">
@@ -299,10 +299,10 @@ export default function SpacesPage() {
             </TabsContent>
 
             <TabsContent value="public">
-              {filteredSpaces.filter((space) => !space.isPrivate).length > 0 ? (
+              {filteredSpaces.filter((space) => !space.is_private).length > 0 ? (
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   {filteredSpaces
-                    .filter((space) => !space.isPrivate)
+                    .filter((space) => !space.is_private)
                     .map((space) => (
                       <Card key={space.id} className="overflow-hidden">
                         <CardHeader className="pb-2 sm:pb-3">
