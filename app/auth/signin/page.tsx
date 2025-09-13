@@ -5,25 +5,22 @@ import { supabase } from "@/lib/supabaseClient"
 import { useState } from "react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
-import { Eye, EyeOff, Share2, Mail, Lock, Github } from "lucide-react"
+import { Share2, Github } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Separator } from "@/components/ui/separator"
+
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 
 export default function SignInPage() {
 const router= useRouter();
   const [isLoading, setIsLoading] = useState(false)
-  const [showPassword, setShowPassword] = useState(false)
   const [formData, setFormData] = useState({
     email: "",
     password: "",})
 
-    const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
+  //   const handleSubmit = async (e: React.FormEvent) => {
+  //   e.preventDefault()
 
-  }
+  // }
 
   const handleSocialLogin = async (provider: string) => {
      const {data, error} = await supabase.auth.signInWithOAuth({
