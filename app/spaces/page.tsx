@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect, use } from "react"
 import Link from "next/link"
 import Header from "@/components/shared /Header"
 import { MOCK_SPACES } from "@/lib/constant /mock_data"
@@ -31,6 +31,7 @@ import {
 } from "@/components/ui/dialog"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { supabase } from '../../lib/supabaseClient';
 
 export default function SpacesPage() {
   const router = useRouter()
@@ -39,6 +40,33 @@ export default function SpacesPage() {
   const [showDeleteDialog, setShowDeleteDialog] = useState(false)
   const [spaceToDelete, setSpaceToDelete] = useState<string | null>(null)
   const filteredSpaces = spaces.filter((space) => space.name.toLowerCase().includes(searchQuery.toLowerCase()))
+
+  
+  useEffect(() => {
+    const fetchSpaces = async () => {
+      try {
+        const { data: { user } } = await supabase.auth.getUser()
+        if (!user) {
+          router.push("/auth/signin")
+          return
+        }
+
+        const userId = user.id
+        if (!userId) return
+
+        const response = await fetch(`/api/spaces?userId=${userId}`)
+        if (!response.ok) throw new Error("Failed to fetch spaces")
+
+        const data = await response.json()
+        setSpaces(data)
+      } catch (error) {
+        console.error("Error fetching spaces:", error)
+      }
+    }
+
+    fetchSpaces()
+  }, [router])
+
 
   const handleDeleteSpace = () => {
     if (!spaceToDelete) return
